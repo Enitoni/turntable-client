@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"allowImportingTsExtensions": true,
 		"allowJs": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
@@ -7,8 +8,10 @@
 		"jsx": "react-jsx",
 		"lib": ["DOM", "DOM.Iterable", "ES2022"],
 		"module": "Preserve",
+		"moduleDetection": "force",
 		"moduleResolution": "Bundler",
 		"noEmit": true,
+		"noErrorTruncation": true,
 		"noUncheckedIndexedAccess": true,
 		"paths": {
 			"~/*": ["./app/*"]
@@ -17,7 +20,8 @@
 		"skipLibCheck": true,
 		"strict": true,
 		"target": "ES2022",
-		"types": ["@remix-run/node", "vite/client"]
+		"types": ["@remix-run/node", "vite/client"],
+		"verbatimModuleSyntax": true
 	},
 	"exclude": ["node_modules", "build"]
 }
