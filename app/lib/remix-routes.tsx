@@ -49,8 +49,8 @@ export function NavLinkTyped({ params, query, ...props }: NavLinkTypedProps<keyo
 export function useNavigateTyped() {
 	const navigate = useNavigate()
 	return <Route extends keyof Routes>(
-		...args: Route extends keyof Routes
-			? [to: Route, params?: Routes[Route]["params"], query?: Routes[Route]["query"]]
+		...args: Route extends keyof RoutesWithParams
+			? [to: Route, params: Routes[Route]["params"], query?: Routes[Route]["query"]]
 			: [to: Route, query?: Routes[Route]["query"]]
 	) => {
 		navigate(

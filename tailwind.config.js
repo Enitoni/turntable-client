@@ -1,4 +1,14 @@
+import { darken } from "polished"
 import defaultTheme from "tailwindcss/defaultTheme.js"
+
+const colors = {
+	primary: "#A845E4",
+	secondary: "#5471FF",
+	darkish: "#0A141D",
+	darkest: "#060A0E",
+	golden: "#FFBF1C",
+	invalid: "#EA3757",
+}
 
 /** @satisfies {import("tailwindcss").Config} */
 export default {
@@ -14,12 +24,9 @@ export default {
 		},
 		extend: {
 			colors: {
-				primary: "#A845E4",
-				secondary: "#5471FF",
-				darkish: "#0A141D",
-				darkest: "#060A0E",
-				golden: "#FFBF1C",
-				invalid: "#EA3757",
+				...colors,
+				"primary-dark-1": darken(0.12, colors.primary),
+				"primary-dark-2": darken(0.24, colors.primary),
 			},
 		},
 	},
