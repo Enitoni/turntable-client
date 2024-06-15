@@ -12,6 +12,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@fontsource-variable/kufam": "^5.0.19",
+    "@fontsource/lato": "^5.0.21",
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
