@@ -1,6 +1,6 @@
 import { LinkTyped, useNavigateTyped } from "~/lib/remix-routes.tsx"
-import { AppLogo } from "./AppLogo.tsx"
-import { UserButton } from "./UserButton.tsx"
+import { AppLogo } from "./app-logo"
+import { UserButton } from "./user-button"
 
 export function AppHeader() {
 	const navigate = useNavigateTyped()

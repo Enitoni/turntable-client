@@ -1,5 +1,5 @@
 import { LucidePlay } from "lucide-react"
-import { Button } from "~/components/Button.tsx"
+import { Button } from "~/components/button.tsx"
 
 export default function DesignPage() {
 	return (

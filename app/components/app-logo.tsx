@@ -1,4 +1,4 @@
-import { defineSvgComponent } from "~/lib/defineSvgComponent.tsx"
+import { defineSvgComponent } from "~/lib/define-svg-component.tsx"
 
 export const AppLogo = defineSvgComponent(
 	"AppLogo",
