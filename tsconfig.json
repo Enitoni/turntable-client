@@ -13,9 +13,6 @@
 		"noEmit": true,
 		"noErrorTruncation": true,
 		"noUncheckedIndexedAccess": true,
-		"paths": {
-			"~/*": ["./app/*"]
-		},
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"strict": true,

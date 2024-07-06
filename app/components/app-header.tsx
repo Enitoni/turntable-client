@@ -1,4 +1,4 @@
-import { LinkTyped, useNavigateTyped } from "~/lib/remix-routes.tsx"
+import { LinkTyped, useNavigateTyped } from "../lib/remix-routes.tsx"
 import { AppLogo } from "./app-logo"
 import { UserButton } from "./user-button"
 
