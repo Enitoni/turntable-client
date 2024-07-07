@@ -1,5 +1,4 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react"
-import { AppHeader } from "./components/app-header.tsx"
 import "./tailwind.css"
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -12,7 +11,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 			</head>
 			<body>
-				<AppHeader />
 				{children}
 				<ScrollRestoration />
 				<Scripts />

@@ -1,18 +1,15 @@
 import { Schema } from "@effect/schema"
-import { Form, Link, redirect, useActionData } from "@remix-run/react"
-import { Effect, pipe } from "effect"
+import { Form, Link, useActionData } from "@remix-run/react"
+import { Effect } from "effect"
 import { getAuthorizedTurntableApi, getTurntableApi, resolveApiResponse } from "../lib/api.ts"
-import { loginResponse } from "../lib/auth.ts"
-import { effectAction, effectLoader, parseReqestBody } from "../lib/data.ts"
+import { setToken } from "../lib/auth.ts"
+import { effectAction, effectLoader, parseReqestBody, redirect } from "../lib/data.ts"
 
 export const loader = effectLoader(
-	pipe(
-		Effect.gen(function* () {
-			yield* getAuthorizedTurntableApi()
-			return redirect("/")
-		}),
-		Effect.catchTag("TokenNotFoundError", () => Effect.succeed(null)),
-	),
+	Effect.matchEffect(getAuthorizedTurntableApi(), {
+		onSuccess: () => redirect("/"),
+		onFailure: () => Effect.succeed(null),
+	}),
 )
 
 export const action = effectAction(
@@ -29,7 +26,8 @@ export const action = effectAction(
 		const response = yield* resolveApiResponse(
 			api.auth.login({ username: body.username, password: body.password }),
 		)
-		return yield* loginResponse(response.token)
+		yield* setToken(response.token)
+		return yield* redirect("/")
 	}),
 )
 

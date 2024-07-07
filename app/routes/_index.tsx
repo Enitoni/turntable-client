@@ -1,24 +1,14 @@
-import { redirect, useLoaderData } from "@remix-run/react"
-import { Effect, pipe } from "effect"
-import { getAuthorizedTurntableApi, resolveApiResponse } from "../lib/api.ts"
-import { logoutResponse } from "../lib/auth.ts"
-import { effectLoader } from "../lib/data.ts"
+import { useLoaderData } from "@remix-run/react"
+import { Effect } from "effect"
+import { getAuthorizedTurntableApi } from "../lib/api.ts"
+import { effectLoader, redirect } from "../lib/data.ts"
 
 export const loader = effectLoader(
-	pipe(
-		Effect.gen(function* () {
-			const api = yield* getAuthorizedTurntableApi()
-			const user = yield* resolveApiResponse(api.auth.user())
-			return { user }
-		}),
+	getAuthorizedTurntableApi().pipe(
+		Effect.map((api) => ({ user: api.user })),
 		Effect.catchTags({
-			TokenNotFoundError: () => Effect.succeed(redirect("/login")),
-			TurntableApiError: (error) => {
-				if (error.details.status === 401) {
-					return logoutResponse() // clear the invalid token
-				}
-				return Effect.die(error)
-			},
+			TokenNotFoundError: () => redirect("/login"),
+			InvalidTokenError: () => redirect("/login"),
 		}),
 	),
 )

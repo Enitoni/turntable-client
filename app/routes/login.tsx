@@ -1,18 +1,16 @@
 import { Schema } from "@effect/schema"
-import { Form, Link, redirect, useActionData } from "@remix-run/react"
-import { Effect, pipe } from "effect"
+import { Form, Link, useActionData } from "@remix-run/react"
+import { Effect } from "effect"
+import { AppLogo } from "../components/app-logo.tsx"
 import { getAuthorizedTurntableApi, getTurntableApi, resolveApiResponse } from "../lib/api.ts"
-import { loginResponse } from "../lib/auth.ts"
-import { effectAction, effectLoader, parseReqestBody } from "../lib/data.ts"
+import { setToken } from "../lib/auth.ts"
+import { effectAction, effectLoader, parseReqestBody, redirect } from "../lib/data.ts"
 
 export const loader = effectLoader(
-	pipe(
-		Effect.gen(function* () {
-			yield* getAuthorizedTurntableApi()
-			return redirect("/")
-		}),
-		Effect.catchTag("TokenNotFoundError", () => Effect.succeed(null)),
-	),
+	Effect.matchEffect(getAuthorizedTurntableApi(), {
+		onSuccess: () => redirect("/"),
+		onFailure: () => Effect.succeed(null),
+	}),
 )
 
 export const action = effectAction(
@@ -25,19 +23,28 @@ export const action = effectAction(
 		)
 		const api = getTurntableApi()
 		const response = yield* resolveApiResponse(api.auth.login(body))
-		return yield* loginResponse(response.token)
+		yield* setToken(response.token)
+		return yield* redirect("/")
 	}),
 )
 
 export default function RouteComponent() {
 	const data = useActionData<typeof action>()
 	return (
-		<Form method="post">
-			<input name="username" type="text" className="bg-slate-950 border-white rounded border" />
-			<input name="password" type="password" className="bg-slate-950 border-white rounded border" />
-			<button type="submit">Submit</button>
-			{data?.error && <div className="text-red-400">{data.error}</div>}
-			<Link to="/register">Create account</Link>
-		</Form>
+		<div className="w-screen h-screen flex flex-col items-center justify-center gap-4">
+			{/* <AppHeader /> */}
+			<AppLogo />
+			<Form method="post" className="h-[200vh]">
+				<input name="username" type="text" className="bg-slate-950 border-white rounded border" />
+				<input
+					name="password"
+					type="password"
+					className="bg-slate-950 border-white rounded border"
+				/>
+				<button type="submit">Submit</button>
+				{data?.error && <div className="text-red-400">{data.error}</div>}
+				<Link to="/register">Create account</Link>
+			</Form>
+		</div>
 	)
 }
