@@ -1,16 +1,25 @@
 import { redirect, useLoaderData } from "@remix-run/react"
 import { Effect, pipe } from "effect"
-import { getAuthorizedTurntableApi } from "../lib/api.ts"
+import { getAuthorizedTurntableApi, resolveApiResponse } from "../lib/api.ts"
+import { logoutResponse } from "../lib/auth.ts"
 import { effectLoader } from "../lib/data.ts"
 
 export const loader = effectLoader(
 	pipe(
 		Effect.gen(function* () {
 			const api = yield* getAuthorizedTurntableApi()
-			const user = yield* Effect.promise(() => api.auth.user())
+			const user = yield* resolveApiResponse(api.auth.user())
 			return { user }
 		}),
-		Effect.catchTag("TokenNotFoundError", () => Effect.succeed(redirect("/login"))),
+		Effect.catchTags({
+			TokenNotFoundError: () => Effect.succeed(redirect("/login")),
+			TurntableApiError: (error) => {
+				if (error.details.status === 401) {
+					return logoutResponse() // clear the invalid token
+				}
+				return Effect.die(error)
+			},
+		}),
 	),
 )
 
