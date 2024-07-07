@@ -5,7 +5,7 @@ export default defineConfig({
 	testDir: "e2e",
 
 	// Run all tests in parallel.
-	fullyParallel: true,
+	fullyParallel: false,
 
 	// Fail the build on CI if you accidentally left test.only in the source code.
 	forbidOnly: !!process.env.CI,
@@ -14,7 +14,7 @@ export default defineConfig({
 	retries: process.env.CI ? 2 : 0,
 
 	// Opt out of parallel tests on CI.
-	workers: process.env.CI ? 1 : undefined,
+	workers: 1,
 
 	// Reporter to use
 	reporter: "html",
@@ -32,6 +32,10 @@ export default defineConfig({
 			name: "chromium",
 			use: { ...devices["Desktop Chrome"] },
 		},
+		{
+			name: "firefox",
+			use: { ...devices["Desktop Firefox"] },
+		},
 	],
 	// Run your local dev server before starting the tests.
 	webServer: [
@@ -41,12 +45,12 @@ export default defineConfig({
 		// 	reuseExistingServer: !process.env.CI,
 		// 	stdout: "pipe",
 		// },
-		// {
-		// 	command: "bun run dev:server",
-		// 	url: "http://localhost:9050",
-		// 	reuseExistingServer: !process.env.CI,
-		// 	stdout: "pipe",
-		// },
+		{
+			command: "bun run dev:server",
+			port: 9050,
+			reuseExistingServer: !process.env.CI,
+			stdout: "pipe",
+		},
 		{
 			command: "bun run dev:remix",
 			url: "http://localhost:5173",
