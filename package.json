@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
-    "dev": "remix vite:dev",
+    "dev": "run-p --race --print-label dev:*",
+    "dev:remix": "remix vite:dev",
+    "dev:server": "cd server && cargo run",
+    "dev:db": "cd server && docker compose -f compose-dev.yml up -d",
     "lint": "biome check .",
     "format": "biome check . --fix",
     "start": "remix-serve ./build/server/index.js",
@@ -30,6 +33,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
+    "@playwright/test": "^1.45.1",
     "@remix-run/dev": "^2.10.2",
     "@types/bun": "^1.1.6",
     "@types/node": "^20.14.10",
