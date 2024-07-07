@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react"
-import { TurntableApi } from "../../api"
-import { tokenCookie } from "../auth"
+import { TurntableApi } from "../../api/TurntableApi.ts"
+import { tokenCookie } from "../auth.ts"
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const token = await tokenCookie.parse(request.headers.get("Cookie"))
