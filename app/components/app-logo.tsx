@@ -64,9 +64,9 @@ const AppLogo = (props: SVGProps<SVGSVGElement>) => (
 				y2="64"
 				gradientUnits="userSpaceOnUse"
 			>
-				<stop stop-color="#4690FF" />
-				<stop offset="0.478951" stop-color="#702DFF" />
-				<stop offset="1" stop-color="#D020ED" />
+				<stop stopColor="#4690FF" />
+				<stop offset="0.478951" stopColor="#702DFF" />
+				<stop offset="1" stopColor="#D020ED" />
 			</linearGradient>
 		</defs>
 	</svg>
