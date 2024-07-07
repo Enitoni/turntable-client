@@ -1,29 +1,37 @@
-import type { LoaderFunctionArgs } from "@remix-run/node"
-import { Form, redirect, useActionData } from "@remix-run/react"
-import { ApiError, TurntableApi } from "../../api"
+import { Schema } from "@effect/schema"
+import { Form, Link, redirect, useActionData } from "@remix-run/react"
+import { Effect, pipe } from "effect"
+import { getAuthorizedTurntableApi, getTurntableApi, resolveApiResponse } from "../lib/api.ts"
+import { loginResponse } from "../lib/auth.ts"
+import { effectAction, effectLoader, parseReqestBody } from "../lib/data.ts"
 
-export async function action({ request }: LoaderFunctionArgs) {
-	try {
-		const data = await request.formData()
+export const loader = effectLoader(
+	pipe(
+		Effect.gen(function* () {
+			yield* getAuthorizedTurntableApi()
+			return redirect("/")
+		}),
+		Effect.catchTag("TokenNotFoundError", () => Effect.succeed(null)),
+	),
+)
 
-		const api = new TurntableApi({
-			BASE: "http://localhost:9050",
-		})
-		await api.auth.register({
-			username: data.get("username") as string,
-			displayName: data.get("displayName") as string,
-			password: data.get("password") as string,
-		})
-
-		return redirect("/")
-	} catch (error) {
-		if (error instanceof ApiError) {
-			console.log(error)
-			return { error: error.body }
-		}
-		throw error
-	}
-}
+export const action = effectAction(
+	Effect.gen(function* () {
+		const body = yield* parseReqestBody(
+			Schema.Struct({
+				username: Schema.String,
+				displayName: Schema.String,
+				password: Schema.String,
+			}),
+		)
+		const api = getTurntableApi()
+		yield* resolveApiResponse(api.auth.register(body))
+		const response = yield* resolveApiResponse(
+			api.auth.login({ username: body.username, password: body.password }),
+		)
+		return yield* loginResponse(response.token)
+	}),
+)
 
 export default function RouteComponent() {
 	const data = useActionData<typeof action>()
@@ -34,6 +42,7 @@ export default function RouteComponent() {
 			<input name="password" type="password" className="bg-slate-950 border-white rounded border" />
 			<button type="submit">Submit</button>
 			{data?.error && <div className="text-red-400">{data.error}</div>}
+			<Link to="/login">Sign in</Link>
 		</Form>
 	)
 }

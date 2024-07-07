@@ -13,12 +13,14 @@
     "generate:openapi": "openapi --input http://localhost:9050/api.json --output api --name TurntableApi"
   },
   "dependencies": {
+    "@effect/schema": "^0.68.17",
     "@faker-js/faker": "^8.4.1",
     "@fontsource-variable/kufam": "^5.0.19",
     "@fontsource/lato": "^5.0.21",
     "@remix-run/node": "^2.10.2",
     "@remix-run/react": "^2.10.2",
     "@remix-run/serve": "^2.10.2",
+    "effect": "^3.4.7",
     "isbot": "^4.4.0",
     "lucide-react": "^0.395.0",
     "polished": "^4.3.1",

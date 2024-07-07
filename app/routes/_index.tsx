@@ -1,23 +1,18 @@
-import type { LoaderFunctionArgs } from "@remix-run/node"
-import { useLoaderData } from "@remix-run/react"
-import { TurntableApi } from "../../api/TurntableApi.ts"
-import { tokenCookie } from "../auth.ts"
+import { redirect, useLoaderData } from "@remix-run/react"
+import { Effect, pipe } from "effect"
+import { getAuthorizedTurntableApi } from "../lib/api.ts"
+import { effectLoader } from "../lib/data.ts"
 
-export async function loader({ request }: LoaderFunctionArgs) {
-	const token = await tokenCookie.parse(request.headers.get("Cookie"))
-	if (!token) {
-		return { user: null }
-	}
-
-	const api = new TurntableApi({
-		BASE: "http://localhost:9050",
-		HEADERS: {
-			Authorization: `Bearer ${token}`,
-		},
-	})
-
-	return { user: await api.auth.user() }
-}
+export const loader = effectLoader(
+	pipe(
+		Effect.gen(function* () {
+			const api = yield* getAuthorizedTurntableApi()
+			const user = yield* Effect.promise(() => api.auth.user())
+			return { user }
+		}),
+		Effect.catchTag("TokenNotFoundError", () => Effect.succeed(redirect("/login"))),
+	),
+)
 
 export default function Index() {
 	const { user } = useLoaderData<typeof loader>()
