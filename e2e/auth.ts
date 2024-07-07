@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test"
+import { type Page, expect } from "@playwright/test"
 import { TurntableApi } from "../api/TurntableApi.ts"
 
 export async function register(username: string, password: string) {
@@ -12,5 +12,8 @@ export async function register(username: string, password: string) {
 export async function registerNewUser(page: Page) {
 	const username = "frieren"
 	const password = "auralol!!!"
-	await page.request.post("/register", { form: { username, displayName: username, password } })
+	const response = await page.request.post("/register", {
+		form: { username, displayName: username, password },
+	})
+	expect(response.status(), "failed to register user").toBe(200)
 }

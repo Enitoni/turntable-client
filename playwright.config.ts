@@ -29,22 +29,22 @@ export default defineConfig({
 	// Configure projects for major browsers.
 	projects: [
 		{
+			name: "setup",
+			testMatch: /global-setup\.ts/,
+		},
+		{
 			name: "chromium",
 			use: { ...devices["Desktop Chrome"] },
+			dependencies: ["setup"],
 		},
 		{
 			name: "firefox",
 			use: { ...devices["Desktop Firefox"] },
+			dependencies: ["setup"],
 		},
 	],
 	// Run your local dev server before starting the tests.
 	webServer: [
-		// {
-		// 	command: "bun run dev:db",
-		// 	url: "http://0.0.0.0:5432",
-		// 	reuseExistingServer: !process.env.CI,
-		// 	stdout: "pipe",
-		// },
 		{
 			command: "bun run dev:server",
 			port: 9050,
