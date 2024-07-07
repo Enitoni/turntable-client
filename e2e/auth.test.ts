@@ -1,4 +1,4 @@
-import { test } from "@playwright/test"
+import { expect, test } from "@playwright/test"
 import { sql } from "drizzle-orm"
 import { register, registerNewUser } from "./auth.ts"
 import { testDb } from "./db.ts"
@@ -10,14 +10,14 @@ test.beforeEach(async () => {
 test("redirects to home when logged in", async ({ page }) => {
 	await registerNewUser(page)
 	await page.goto("/login")
-	await page.waitForURL("/", { timeout: 5000 })
+	await expect(page).toHaveURL("/")
 	await page.goto("/register")
-	await page.waitForURL("/", { timeout: 5000 })
+	await expect(page).toHaveURL("/")
 })
 
 test("redirects to login when logged out", async ({ page }) => {
 	await page.goto("/")
-	await page.waitForURL("/login")
+	await expect(page).toHaveURL("/login")
 })
 
 test("register", async ({ page }) => {
@@ -26,7 +26,7 @@ test("register", async ({ page }) => {
 	await page.locator('input[name="displayName"]').fill("auroralol!!!")
 	await page.locator('input[name="password"]').fill("auroralol!!!")
 	await page.getByRole("button", { name: "Submit" }).click()
-	await page.waitForURL("/", { timeout: 5000 })
+	await expect(page).toHaveURL("/")
 })
 
 test("login", async ({ page }) => {
@@ -39,5 +39,5 @@ test("login", async ({ page }) => {
 	await page.locator('input[name="username"]').fill(username)
 	await page.locator('input[name="password"]').fill(password)
 	await page.getByRole("button", { name: "Submit" }).click()
-	await page.waitForURL("/", { timeout: 5000 })
+	await expect(page).toHaveURL("/")
 })
