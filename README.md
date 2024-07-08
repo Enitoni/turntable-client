@@ -1,40 +1,60 @@
-# Welcome to Remix!
+# Setup
 
-- 📖 [Remix docs](https://remix.run/docs)
+1. Ensure you have the following installed:
 
-## Development
+- [Bun](https://bun.sh/)
+- [Rust](https://www.rust-lang.org/tools/install)
+- Either [Docker](https://docs.docker.com/get-docker/) or [PostgresQL](https://www.postgresql.org/download/)
+- [SQLx CLI](https://github.com/launchbadge/sqlx/blob/main/sqlx-cli/README.md#install)
 
-Run the dev server:
+1. Clone the repository with submodules:
 
-```shellscript
-npm run dev
-```
+   ```sh
+   git clone --recursive https://github.com/itsMapleLeaf/turnt.git
+   cd turnt
+   ```
 
-## Deployment
+1. Start the postgres database.
 
-First, build your app for production:
+   If you're using Docker, you can run `docker compose -f server/compose-dev.yml up -d` to start it up.
+
+1. Add an `.env` file to the root of the project with the database url:
+
+   ```sh
+   DATABASE_URL="postgres://turntable:turntable@localhost:5432/turntable"
+   ```
+
+1. Install dependencies:
+
+   ```sh
+   bun install
+   ```
+
+1. Run database migrations:
+
+   ```sh
+   sqlx migrate run --source server/migrations
+   ```
+
+1. In a separate terminal, run the server:
+
+   ```sh
+   bun dev:server
+   ```
+
+1. Generate the API client:
+
+   ```sh
+   bun generate:api
+   ```
+
+# Development
 
 ```sh
-npm run build
+# run the app and server in development mode
+bun dev
+
+# or, if you prefer, run the app and server in two separate terminals
+bun dev:remix
+bun dev:server
 ```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
