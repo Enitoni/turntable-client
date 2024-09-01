@@ -10,7 +10,7 @@ import {
 import { unstable_data as data } from "@remix-run/node"
 import { Effect, pipe } from "effect"
 import type { ZodType } from "zod"
-import { getRequest } from "../../lib/data"
+import { ThrownRedirect, getRequest } from "../../lib/data"
 
 export class InvalidFormError {
 	readonly _tag = "InvalidForm"
@@ -64,6 +64,10 @@ export const handleErrorForForm =
 		)
 
 const convertErrorToSubmissionReply = (submission: Submission<unknown>, error: unknown) => {
+	if (error instanceof ThrownRedirect) {
+		return error.response
+	}
+
 	if (error instanceof InvalidFormError) {
 		// @ts-expect-error: remix sucks
 		return data(submission.reply({ formErrors: ["errors.invalidForm"] }), {
