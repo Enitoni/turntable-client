@@ -30,6 +30,7 @@ export default {
 		},
 		boxShadow: {
 			sm: "2px 2px 7px -1px rgba(0, 0, 0, 0.13)",
+			button: "4px 4px 10px 0 rgba(0, 0, 0, 0.15)",
 			DEFAULT: "4px 4px 10px 0 rgba(0, 0, 0, 0.1)",
 		},
 		extend: {
