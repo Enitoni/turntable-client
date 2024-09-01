@@ -18,6 +18,10 @@
   @apply text-2xl font-bold font-display;
 }
 
+.link {
+  @apply font-bold text-secondary hover:underline;
+}
+
 .spinner {
   width: 100%;
   height: 100%;
