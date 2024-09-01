@@ -10,6 +10,7 @@ import {
 import { unstable_data as data } from "@remix-run/node"
 import { Effect, pipe } from "effect"
 import type { ZodType } from "zod"
+import { TurntableApiError } from "../../lib/api"
 import { ThrownRedirect, getRequest } from "../../lib/data"
 
 export class InvalidFormError {
@@ -70,7 +71,14 @@ const convertErrorToSubmissionReply = (submission: Submission<unknown>, error: u
 
 	if (error instanceof InvalidFormError) {
 		// @ts-expect-error: remix sucks
-		return data(submission.reply({ formErrors: ["errors.invalidForm"] }), {
+		return data(submission.reply({ formErrors: ["Invalid form"] }), {
+			status: 400,
+		})
+	}
+
+	if (error instanceof TurntableApiError) {
+		// @ts-expect-error: remix sucks
+		return data(submission.reply({ formErrors: [error.details.body] }), {
 			status: 400,
 		})
 	}
@@ -78,7 +86,7 @@ const convertErrorToSubmissionReply = (submission: Submission<unknown>, error: u
 	console.error(error)
 
 	// @ts-expect-error: remix sucks
-	return data(submission.reply({ formErrors: ["errors.unknown"] }), {
+	return data(submission.reply({ formErrors: ["Unknown error"] }), {
 		status: 500,
 	})
 }
