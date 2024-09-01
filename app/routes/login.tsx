@@ -1,7 +1,7 @@
 import { Schema } from "@effect/schema"
 import { Form, Link, useActionData } from "@remix-run/react"
 import { Effect } from "effect"
-import { AppLogo } from "../components/app-logo.tsx"
+import { AppLogo } from "../components/AppLogo.tsx"
 import { getAuthorizedTurntableApi, getTurntableApi, resolveApiResponse } from "../lib/api.ts"
 import { setToken } from "../lib/auth.ts"
 import { effectAction, effectLoader, parseReqestBody, redirect } from "../lib/data.ts"
