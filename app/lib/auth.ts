@@ -1,6 +1,6 @@
 import { createCookie } from "@remix-run/node"
 import { Effect } from "effect"
-import { getRequest, getResponse } from "./data.ts"
+import { getRequest } from "./data.ts"
 
 const tokenCookie = createCookie("token", {
 	path: "/",
@@ -25,18 +25,9 @@ export function getToken() {
 	)
 }
 
-export function setToken(token: string) {
+export function getCookieToken(token: string | null) {
 	return Effect.gen(function* () {
-		const response = yield* getResponse()
 		const cookie = yield* Effect.promise(() => tokenCookie.serialize(token))
-		response.headers.set("Set-Cookie", cookie)
-	})
-}
-
-export function removeToken() {
-	return Effect.gen(function* () {
-		const response = yield* getResponse()
-		const cookie = yield* Effect.promise(() => tokenCookie.serialize(null))
-		response.headers.set("Set-Cookie", cookie)
+		return cookie
 	})
 }

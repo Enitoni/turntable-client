@@ -1,16 +1,15 @@
 import { Schema } from "@effect/schema"
 import type { ParseError } from "@effect/schema/ParseResult"
 import { unstable_defineAction, unstable_defineLoader } from "@remix-run/node"
+import { unstable_data as data, redirect as remixRedirect } from "@remix-run/node"
 import type { Params } from "@remix-run/react"
 import type { unstable_Loader } from "@remix-run/server-runtime"
-import type { ResponseStub } from "@remix-run/server-runtime/dist/single-fetch"
 import { Context, Effect, pipe } from "effect"
 import type { TurntableApiError } from "./api.ts"
 
 interface DataFunctionContext {
 	request: Request
 	params: Params<string>
-	response: ResponseStub
 }
 
 class DataFunctionContextService extends Context.Tag("DataFunctionService")<
@@ -27,10 +26,6 @@ export function getRequest() {
 
 export function getParams() {
 	return DataFunctionContextService.pipe(Effect.map((context) => context.params))
-}
-
-export function getResponse() {
-	return DataFunctionContextService.pipe(Effect.map((context) => context.response))
 }
 
 // EXPORT THIS I SWEAR TO GOD
@@ -67,12 +62,15 @@ export function effectAction<Output extends DataFunctionOutput>(
 			Effect.catchTags({
 				ThrownRedirect: (thrown) => Effect.succeed(thrown),
 				TurntableApiError: (error) => {
-					args.response.status = error.details.status === 400 ? 500 : error.details.status
-					return Effect.succeed({ error: String(error.details.body) })
+					return Effect.succeed(
+						data(
+							{ error: String(error.details.body) },
+							{ status: error.details.status === 400 ? 500 : error.details.status },
+						),
+					)
 				},
 				ParseError: (error) => {
-					args.response.status = 422
-					return Effect.succeed({ error: error.message })
+					return Effect.succeed(data({ error: error.message }, { status: 422 }))
 				},
 			}),
 			Effect.runPromise,
@@ -95,14 +93,11 @@ export function parseReqestBody<Body>(schema: Schema.Schema<Body>) {
 
 export class ThrownRedirect {
 	readonly _tag = "ThrownRedirect"
-	constructor(readonly response: ResponseStub) {}
+	constructor(readonly response: Response) {}
 }
 
-export function redirect(url: string, status = 303) {
+export function redirect(url: string, options: ResponseInit | number = 303) {
 	return Effect.gen(function* () {
-		const response = yield* getResponse()
-		response.headers.set("Location", url)
-		response.status = status
-		return yield* Effect.fail(new ThrownRedirect(response))
+		return yield* Effect.fail(new ThrownRedirect(remixRedirect(url, options)))
 	})
 }
