@@ -10,6 +10,16 @@ const colors = {
 	invalid: "#EA3757",
 }
 
+const neutralLights = {
+	100: "rgba(255, 255, 255, 0.1)",
+	200: "rgba(255, 255, 255, 0.2)",
+	500: "rgba(255, 255, 255, 0.5)",
+}
+
+const neutralDarks = {
+	100: "rgba(0, 0, 0, 0.2)",
+}
+
 /** @satisfies {import("tailwindcss").Config} */
 export default {
 	content: ["./app/**/*.{js,jsx,ts,tsx}"],
@@ -25,6 +35,10 @@ export default {
 		extend: {
 			colors: {
 				...colors,
+				neutral: {
+					light: neutralLights,
+					dark: neutralDarks,
+				},
 				"primary-dark-1": darken(0.12, colors.primary),
 				"primary-dark-2": darken(0.24, colors.primary),
 			},
