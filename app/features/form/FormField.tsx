@@ -26,9 +26,9 @@ export function FormField(props: FormFieldProps) {
 
 	return (
 		<div className={mergedClassName}>
-			<label className="label" htmlFor={htmlFor}>
+			<label className="flex mb-2 text-base font-bold label font-display" htmlFor={htmlFor}>
 				{label}
-				{required && <span className="text-semantic-negative"> *</span>}
+				{required && <span className="ml-1 text-invalid"> *</span>}
 			</label>
 			{children}
 			{description && <p className="mt-2 text-sm text-neutral-content-light">{description}</p>}
@@ -36,7 +36,7 @@ export function FormField(props: FormFieldProps) {
 				<span
 					// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 					key={index}
-					className="inline-block mt-2 text-sm italic font-medium text-semantic-negative"
+					className="inline-block mt-2 text-sm italic font-medium text-invalid"
 				>
 					{error}
 				</span>
