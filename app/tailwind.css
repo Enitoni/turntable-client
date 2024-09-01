@@ -10,6 +10,14 @@
   @apply w-6 h-6;
 }
 
+.card {
+  @apply border rounded-md shadow border-neutral-light-100 bg-darkish;
+}
+
+.title {
+  @apply text-2xl font-bold font-display;
+}
+
 .spinner {
   width: 100%;
   height: 100%;
