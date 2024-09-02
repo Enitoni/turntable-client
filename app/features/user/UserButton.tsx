@@ -1,5 +1,4 @@
 import type { User } from "../../../api"
-import avatar from "../assets/avatar.jpg"
 import { UserAvatar } from "./UserAvatar"
 
 export interface UserButtonProps {
