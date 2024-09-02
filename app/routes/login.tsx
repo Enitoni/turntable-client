@@ -6,11 +6,11 @@ import { FormButton } from "../features/form/FormButton.tsx"
 import { FormError } from "../features/form/FormError.tsx"
 import { TextField } from "../features/form/TextField.tsx"
 import { ZodForm } from "../features/form/ZodForm.tsx"
-import { withSubmissionParser } from "../features/form/helpers.server.ts"
+import { formEffectAction, withSubmissionParser } from "../features/form/helpers.server.ts"
 import { loginSchema } from "../features/form/schema.ts"
 import { getAuthorizedTurntableApi, getTurntableApi, resolveApiResponse } from "../lib/api.ts"
 import { getCookieToken } from "../lib/auth.ts"
-import { effectAction, effectLoader, redirect } from "../lib/data.ts"
+import { effectLoader, redirect } from "../lib/data.ts"
 
 export const loader = effectLoader(
 	Effect.matchEffect(getAuthorizedTurntableApi(), {
@@ -19,7 +19,7 @@ export const loader = effectLoader(
 	}),
 )
 
-export const action = effectAction(
+export const action = formEffectAction(
 	withSubmissionParser(loginSchema, (value) =>
 		Effect.gen(function* () {
 			const api = getTurntableApi()
@@ -43,7 +43,11 @@ export default function RouteComponent() {
 				<AppLogo className="mb-16" />
 				<div className="p-6 card min-w-[412px]">
 					<h1 className="mb-6 title">Sign in</h1>
-					<ZodForm className="flex flex-col gap-6" lastResult={lastResult} schema={loginSchema}>
+					<ZodForm
+						className="flex flex-col gap-6"
+						lastResult={lastResult ?? null}
+						schema={loginSchema}
+					>
 						{(fields, state) => (
 							<>
 								<TextField field={fields.username} label={"Username"} required />

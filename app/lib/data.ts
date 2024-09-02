@@ -12,11 +12,10 @@ interface DataFunctionContext {
 	params: Params<string>
 }
 
-class DataFunctionContextService extends Context.Tag("DataFunctionService")<
+export class DataFunctionContextService extends Context.Tag("DataFunctionService")<
 	DataFunctionContextService,
 	DataFunctionContext
 >() {}
-export type { DataFunctionContextService }
 
 export type DataFunctionServices = DataFunctionContextService
 
@@ -29,7 +28,7 @@ export function getParams() {
 }
 
 // EXPORT THIS I SWEAR TO GOD
-type DataFunctionOutput = Exclude<ReturnType<unstable_Loader>, Promise<unknown>>
+export type DataFunctionOutput = Exclude<ReturnType<unstable_Loader>, Promise<unknown>>
 
 export function effectLoader<Output extends DataFunctionOutput>(
 	effect: Effect.Effect<Output, ThrownRedirect, DataFunctionServices>,

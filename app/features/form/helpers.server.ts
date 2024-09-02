@@ -5,16 +5,39 @@ import {
 	unstable_composeUploadHandlers,
 	unstable_createFileUploadHandler,
 	unstable_createMemoryUploadHandler,
+	unstable_defineAction,
 	unstable_parseMultipartFormData,
 } from "@remix-run/node"
 import { unstable_data as data } from "@remix-run/node"
 import { Effect, pipe } from "effect"
 import type { ZodType } from "zod"
 import { TurntableApiError } from "../../lib/api"
-import { ThrownRedirect, getRequest } from "../../lib/data"
+import {
+	DataFunctionContextService,
+	type DataFunctionOutput,
+	type DataFunctionServices,
+	ThrownRedirect,
+	getRequest,
+} from "../../lib/data"
 
 export class InvalidFormError {
 	readonly _tag = "InvalidForm"
+}
+
+export function formEffectAction<Output extends DataFunctionOutput>(
+	effect: Effect.Effect<Output, ThrownRedirect | TurntableApiError, DataFunctionServices>,
+) {
+	return unstable_defineAction(async function action(args) {
+		const result = await pipe(
+			effect,
+			Effect.provideService(DataFunctionContextService, args),
+			Effect.runPromise,
+		)
+		if (result instanceof ThrownRedirect) {
+			throw result.response
+		}
+		return result
+	})
 }
 
 export const parseSubmissionFromRequest = <T>(schema: ZodType<T>) =>
@@ -66,18 +89,16 @@ export const handleErrorForForm =
 
 const convertErrorToSubmissionReply = (submission: Submission<unknown>, error: unknown) => {
 	if (error instanceof ThrownRedirect) {
-		return error.response
+		return error.response as never
 	}
 
 	if (error instanceof InvalidFormError) {
-		// @ts-expect-error: remix sucks
 		return data(submission.reply({ formErrors: ["Invalid form"] }), {
 			status: 400,
 		})
 	}
 
 	if (error instanceof TurntableApiError) {
-		// @ts-expect-error: remix sucks
 		return data(submission.reply({ formErrors: [error.details.body] }), {
 			status: 400,
 		})
@@ -85,7 +106,6 @@ const convertErrorToSubmissionReply = (submission: Submission<unknown>, error: u
 
 	console.error(error)
 
-	// @ts-expect-error: remix sucks
 	return data(submission.reply({ formErrors: ["Unknown error"] }), {
 		status: 500,
 	})
