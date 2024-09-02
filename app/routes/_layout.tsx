@@ -1,5 +1,6 @@
-import { useLoaderData } from "@remix-run/react"
+import { Outlet, useLoaderData } from "@remix-run/react"
 import { Effect } from "effect"
+import { AppHeader } from "../components/AppHeader.tsx"
 import { getAuthorizedTurntableApi } from "../lib/api.ts"
 import { effectLoader, redirect } from "../lib/data.ts"
 
@@ -15,5 +16,13 @@ export const loader = effectLoader(
 
 export default function Index() {
 	const { user } = useLoaderData<typeof loader>()
-	return <div className="font-sans p-4">{JSON.stringify(user, null, 2)}</div>
+
+	return (
+		<div>
+			<AppHeader user={user} />
+			<main className="max-w-[960px] mx-auto mt-16">
+				<Outlet />
+			</main>
+		</div>
+	)
 }
