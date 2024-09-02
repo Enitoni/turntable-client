@@ -1,22 +1,19 @@
-import { LinkTyped, useNavigateTyped } from "../lib/remix-routes.tsx"
+import { Link } from "@remix-run/react"
+import type { User } from "../../api/index.ts"
+import { UserButton } from "../features/user/UserButton.tsx"
 import { AppLogo } from "./AppLogo.tsx"
-import { UserButton } from "./UserButton.tsx"
 
-export function AppHeader() {
-	const navigate = useNavigateTyped()
+export interface AppHeaderProps {
+	user: User
+}
+
+export function AppHeader(props: AppHeaderProps) {
 	return (
-		<header className="bg-darkish px-4 h-16 justify-between flex items-center">
-			<LinkTyped
-				to="/"
-				className="hover:scale-105 transition-transform active:scale-100 active:duration-0"
-				onContextMenu={(event) => {
-					event.preventDefault()
-					navigate("/design")
-				}}
-			>
-				<AppLogo className="h-10 w-auto" />
-			</LinkTyped>
-			<UserButton />
+		<header className="flex items-center justify-between h-16 px-4 bg-darkish">
+			<Link to="/">
+				<AppLogo className="w-auto h-10" />
+			</Link>
+			<UserButton user={props.user} />
 		</header>
 	)
 }
