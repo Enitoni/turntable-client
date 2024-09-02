@@ -1,9 +1,16 @@
-import { Schema } from "@effect/schema"
-import { Form, Link, useActionData } from "@remix-run/react"
+import { Link, useActionData } from "@remix-run/react"
 import { Effect } from "effect"
+import { LogIn, UserPlus } from "lucide-react"
+import { AppLogo } from "../components/AppLogo.tsx"
+import { FormButton } from "../features/form/FormButton.tsx"
+import { FormError } from "../features/form/FormError.tsx"
+import { TextField } from "../features/form/TextField.tsx"
+import { ZodForm } from "../features/form/ZodForm.tsx"
+import { withSubmissionParser } from "../features/form/helpers.server.ts"
+import { registerSchema } from "../features/form/schema.ts"
 import { getAuthorizedTurntableApi, getTurntableApi, resolveApiResponse } from "../lib/api.ts"
-import { setToken } from "../lib/auth.ts"
-import { effectAction, effectLoader, parseReqestBody, redirect } from "../lib/data.ts"
+import { getCookieToken } from "../lib/auth.ts"
+import { effectAction, effectLoader, redirect } from "../lib/data.ts"
 
 export const loader = effectLoader(
 	Effect.matchEffect(getAuthorizedTurntableApi(), {
@@ -13,34 +20,58 @@ export const loader = effectLoader(
 )
 
 export const action = effectAction(
-	Effect.gen(function* () {
-		const body = yield* parseReqestBody(
-			Schema.Struct({
-				username: Schema.String,
-				displayName: Schema.String,
-				password: Schema.String,
-			}),
-		)
-		const api = getTurntableApi()
-		yield* resolveApiResponse(api.auth.register(body))
-		const response = yield* resolveApiResponse(
-			api.auth.login({ username: body.username, password: body.password }),
-		)
-		yield* setToken(response.token)
-		return yield* redirect("/")
-	}),
+	withSubmissionParser(registerSchema, (value) =>
+		Effect.gen(function* () {
+			const api = getTurntableApi()
+			yield* resolveApiResponse(api.auth.register(value))
+
+			const response = yield* resolveApiResponse(
+				api.auth.login({ username: value.username, password: value.password }),
+			)
+
+			const cookie = yield* getCookieToken(response.token)
+
+			return yield* redirect("/", {
+				headers: { "Set-Cookie": cookie },
+			})
+		}),
+	),
 )
 
 export default function RouteComponent() {
-	const data = useActionData<typeof action>()
+	const lastResult = useActionData<typeof action>()
+
 	return (
-		<Form method="post">
-			<input name="username" type="text" className="bg-slate-950 border-white rounded border" />
-			<input name="displayName" type="text" className="bg-slate-950 border-white rounded border" />
-			<input name="password" type="password" className="bg-slate-950 border-white rounded border" />
-			<button type="submit">Submit</button>
-			{data?.error && <div className="text-red-400">{data.error}</div>}
-			<Link to="/login">Sign in</Link>
-		</Form>
+		<div className="flex flex-col items-center justify-center w-screen h-screen gap-4">
+			<div className="flex flex-col items-center">
+				<AppLogo className="mb-16" />
+				<div className="p-6 card min-w-[412px]">
+					<h1 className="mb-6 title">Create account</h1>
+					<ZodForm className="flex flex-col gap-6" lastResult={lastResult} schema={registerSchema}>
+						{(fields, state) => (
+							<>
+								<TextField field={fields.username} label={"Username"} required />
+								<TextField field={fields.displayName} label={"Display name"} required />
+								<TextField field={fields.password} label={"Password"} type="password" required />
+								<div className="w-full">
+									<FormError state={state} />
+									<div className="flex items-center justify-between">
+										<Link to="/login" className="link">
+											Sign in instead
+										</Link>
+										<FormButton
+											state={state}
+											iconSlot={<UserPlus />}
+											label={"Create"}
+											className="self-start primary-button"
+										/>
+									</div>
+								</div>
+							</>
+						)}
+					</ZodForm>
+				</div>
+			</div>
+		</div>
 	)
 }
