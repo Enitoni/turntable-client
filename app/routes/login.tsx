@@ -23,9 +23,10 @@ export const action = effectAction(
 	withSubmissionParser(loginSchema, (value) =>
 		Effect.gen(function* () {
 			const api = getTurntableApi()
-			const response = yield* resolveApiResponse(api.auth.login(value))
 
+			const response = yield* resolveApiResponse(api.auth.login(value))
 			const cookie = yield* getCookieToken(response.token)
+
 			return yield* redirect("/", {
 				headers: { "Set-Cookie": cookie },
 			})
