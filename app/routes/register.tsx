@@ -6,7 +6,7 @@ import { FormButton } from "../features/form/FormButton.tsx"
 import { FormError } from "../features/form/FormError.tsx"
 import { TextField } from "../features/form/TextField.tsx"
 import { ZodForm } from "../features/form/ZodForm.tsx"
-import { withSubmissionParser } from "../features/form/helpers.server.ts"
+import { formEffectAction, withSubmissionParser } from "../features/form/helpers.server.ts"
 import { registerSchema } from "../features/form/schema.ts"
 import { getAuthorizedTurntableApi, getTurntableApi, resolveApiResponse } from "../lib/api.ts"
 import { getCookieToken } from "../lib/auth.ts"
@@ -19,7 +19,7 @@ export const loader = effectLoader(
 	}),
 )
 
-export const action = effectAction(
+export const action = formEffectAction(
 	withSubmissionParser(registerSchema, (value) =>
 		Effect.gen(function* () {
 			const api = getTurntableApi()

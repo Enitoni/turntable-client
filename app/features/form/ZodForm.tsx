@@ -33,7 +33,7 @@ export type Fields<Schema extends Record<string, unknown>, Error = string[]> = R
 
 export interface ZodFormProps<T extends Record<string, unknown>> {
 	schema: ZodType<T>
-	lastResult: SubmissionResult | null
+	lastResult?: SubmissionResult | null
 	initialValues?: DefaultValue<T>
 	className?: string
 	children: (fields: Fields<T>, state: FormState) => ReactElement
