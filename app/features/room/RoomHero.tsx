@@ -37,15 +37,17 @@ function renderPlayerContent(player: Player, currentItem: QueueItem, room: Room)
 	return (
 		<div className="flex">
 			<TrackCover className="size-[200px]" track={currentItem.track} />
-			<div className="relative flex flex-col flex-1 py-1 ml-6">
-				<div className="flex-1">
-					<h2 className="text-lg font-bold leading-6">{currentItem.track.title}</h2>
-					<h3 className="font-medium ">by {currentItem.track.artist}</h3>
-				</div>
-				<div className="absolute top-0 right-0 flex items-center">
-					<span className="font-semibold">{member.user.displayName} queued this</span>
-					<div className="ml-4 border-2 rounded-full border-white/10 overflow-clip">
-						<UserAvatar user={member.user} className="size-8" />
+			<div className="flex flex-col flex-1 py-1 ml-6 ">
+				<div className="flex items-start flex-1">
+					<div>
+						<h2 className="text-lg font-bold leading-6">{currentItem.track.title}</h2>
+						<h3 className="font-medium ">by {currentItem.track.artist}</h3>
+					</div>
+					<div className="flex items-center flex-shrink-0 pl-6 ">
+						<span className="font-medium">{member.user.displayName} queued this</span>
+						<div className="ml-4 border-2 rounded-full border-white/10 overflow-clip">
+							<UserAvatar user={member.user} className="size-8" />
+						</div>
 					</div>
 				</div>
 				<PlayerProgress player={player} currentItem={currentItem} roomId={room.id} />
