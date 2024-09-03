@@ -40,7 +40,9 @@ function renderPlayerContent(player: Player, currentItem: QueueItem, room: Room)
 			<div className="flex flex-col flex-1 py-1 ml-6 ">
 				<div className="flex items-start flex-1">
 					<div className="flex-1">
-						<h2 className="text-lg font-bold leading-6">{currentItem.track.title}</h2>
+						<h2 className="text-lg font-bold leading-6 line-clamp-2 text-ellipsis">
+							{currentItem.track.title}
+						</h2>
 						<h3 className="font-medium ">by {currentItem.track.artist}</h3>
 					</div>
 					<div className="flex items-center flex-shrink-0 pl-6 ">
