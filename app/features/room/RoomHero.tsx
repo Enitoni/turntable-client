@@ -39,7 +39,7 @@ function renderPlayerContent(player: Player, currentItem: QueueItem, room: Room)
 			<TrackCover className="size-[200px]" track={currentItem.track} />
 			<div className="flex flex-col flex-1 py-1 ml-6 ">
 				<div className="flex items-start flex-1">
-					<div>
+					<div className="flex-1">
 						<h2 className="text-lg font-bold leading-6">{currentItem.track.title}</h2>
 						<h3 className="font-medium ">by {currentItem.track.artist}</h3>
 					</div>
