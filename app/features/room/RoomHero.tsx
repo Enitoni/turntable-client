@@ -50,9 +50,9 @@ function renderPlayerContent(player: Player, currentItem: QueueItem, members: Ro
 					</div>
 				</div>
 				<div className="flex items-center gap-4">
-					<span className="text-sm">{humanizedTime}</span>
+					<span className="text-sm font-semibold">{humanizedTime}</span>
 					<ProgressBar progress={player.currentTime / currentItem.track.duration} />
-					<span className="text-sm">{humaizedDuration}</span>
+					<span className="text-sm font-semibold">{humaizedDuration}</span>
 				</div>
 			</div>
 		</div>
