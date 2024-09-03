@@ -1,6 +1,8 @@
+import { useState } from "react"
 import type { Player, QueueItem, RoomMember } from "../../../api"
 import { ProgressBar } from "../../components/ProgressBar"
 import { humanizeSeconds } from "../core/helpers"
+import { useServerEvent } from "../realtime/hooks"
 import { TrackCover } from "../track/TrackCover"
 import { UserAvatar } from "../user/UserAvatar"
 
@@ -32,9 +34,6 @@ function renderEmptyStateContent() {
 function renderPlayerContent(player: Player, currentItem: QueueItem, members: RoomMember[]) {
 	const member = members.find((member) => member.id === currentItem.userId) as RoomMember
 
-	const humanizedTime = humanizeSeconds(player.currentTime)
-	const humaizedDuration = humanizeSeconds(currentItem.track.duration)
-
 	return (
 		<div className="flex">
 			<TrackCover className="size-[200px]" track={currentItem.track} />
@@ -49,12 +48,37 @@ function renderPlayerContent(player: Player, currentItem: QueueItem, members: Ro
 						<UserAvatar user={member.user} className="size-8" />
 					</div>
 				</div>
-				<div className="flex items-center gap-4">
-					<span className="text-sm font-semibold">{humanizedTime}</span>
-					<ProgressBar progress={player.currentTime / currentItem.track.duration} />
-					<span className="text-sm font-semibold">{humaizedDuration}</span>
-				</div>
+				<PlayerProgress player={player} currentItem={currentItem} />
 			</div>
+		</div>
+	)
+}
+
+interface PlayerProgressProps {
+	player: Player
+	currentItem: QueueItem
+}
+
+function PlayerProgress(props: PlayerProgressProps) {
+	const { player, currentItem } = props
+	const [currentTime, setCurrentTime] = useState(player.currentTime)
+
+	const humanizedTime = humanizeSeconds(currentTime)
+	const humaizedDuration = humanizeSeconds(currentItem.track.duration)
+
+	useServerEvent((event) => {
+		// @ts-expect-error: event type is wrong
+		if (event.type === "player-time-update") {
+			// @ts-expect-error: event type is wrong
+			setCurrentTime(event.position)
+		}
+	})
+
+	return (
+		<div className="flex items-center gap-4">
+			<span className="text-sm font-semibold">{humanizedTime}</span>
+			<ProgressBar progress={currentTime / currentItem.track.duration} />
+			<span className="text-sm font-semibold">{humaizedDuration}</span>
 		</div>
 	)
 }
