@@ -20,7 +20,7 @@ export default function Index() {
 	return (
 		<div>
 			<AppHeader user={user} />
-			<main className="max-w-[960px] mx-auto mt-16 px-4">
+			<main className="max-w-[1100px] mx-auto mt-16 px-4">
 				<Outlet />
 			</main>
 		</div>
