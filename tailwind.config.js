@@ -26,7 +26,7 @@ export default {
 	theme: {
 		fontFamily: {
 			sans: ["Lato", ...defaultTheme.fontFamily.sans],
-			display: ["Kufam", ...defaultTheme.fontFamily.sans],
+			display: ["Kufam Variable", ...defaultTheme.fontFamily.sans],
 		},
 		boxShadow: {
 			sm: "2px 2px 7px -1px rgba(0, 0, 0, 0.13)",
