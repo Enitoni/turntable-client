@@ -8,16 +8,17 @@ import { UserAvatar } from "../user/UserAvatar"
 
 export interface RoomHeroProps {
 	player?: Player | null
+	currentQueueItem?: QueueItem
 	room: Room
 }
 
 export function RoomHero(props: RoomHeroProps) {
-	const { player, room } = props
+	const { player, currentQueueItem, room } = props
 
 	return (
 		<div className="p-6 card">
-			{player?.currentItem
-				? renderPlayerContent(player, player.currentItem, room)
+			{currentQueueItem
+				? renderPlayerContent(player as Player, currentQueueItem, room)
 				: renderEmptyStateContent()}
 		</div>
 	)

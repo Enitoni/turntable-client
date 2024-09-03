@@ -1,5 +1,7 @@
 import { useLoaderData } from "@remix-run/react"
 import { Effect } from "effect"
+import { useState } from "react"
+import { useServerEvent } from "../features/realtime/hooks"
 import { QueueList } from "../features/room/QueueList"
 import { RoomHero } from "../features/room/RoomHero"
 import { RoomMemberList } from "../features/room/RoomMemberList"
@@ -19,7 +21,16 @@ export const loader = effectLoader(
 )
 
 export default function Index() {
-	const { room, queue } = useLoaderData<typeof loader>()
+	const { room, queue: rawQueue } = useLoaderData<typeof loader>()
+	const [queue, setQueue] = useState(rawQueue)
+
+	useServerEvent((event) => {
+		// @ts-expect-error: event type is wrong
+		if (event.type === "room-queue-update" && event.room_id === room.id) {
+			// @ts-expect-error: event type is wrong
+			setQueue({ items: event.items, history: event.history })
+		}
+	})
 
 	return (
 		<div>
@@ -27,7 +38,7 @@ export default function Index() {
 				<h1 className="title">{room.title}</h1>
 				<span className="text-base mt-[-0.2rem] block">{room.description}</span>
 			</div>
-			<RoomHero room={room} player={room.player} />
+			<RoomHero room={room} currentQueueItem={queue.items[0]} player={room.player} />
 			<div className="flex gap-6 mt-8">
 				<div className="flex-1">
 					<QueueList queue={queue} />
