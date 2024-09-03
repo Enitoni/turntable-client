@@ -1,4 +1,6 @@
 import type { Player, QueueItem, RoomMember } from "../../../api"
+import { ProgressBar } from "../../components/ProgressBar"
+import { humanizeSeconds } from "../core/helpers"
 import { TrackCover } from "../track/TrackCover"
 import { UserAvatar } from "../user/UserAvatar"
 
@@ -30,11 +32,14 @@ function renderEmptyStateContent() {
 function renderPlayerContent(player: Player, currentItem: QueueItem, members: RoomMember[]) {
 	const member = members.find((member) => member.id === currentItem.userId) as RoomMember
 
+	const humanizedTime = humanizeSeconds(player.currentTime)
+	const humaizedDuration = humanizeSeconds(currentItem.track.duration)
+
 	return (
 		<div className="flex">
 			<TrackCover className="size-[200px]" track={currentItem.track} />
-			<div className="relative flex flex-col flex-1 ml-6">
-				<div>
+			<div className="relative flex flex-col flex-1 py-1 ml-6">
+				<div className="flex-1">
 					<h2 className="mb-1 text-xl font-bold leading-6">{currentItem.track.title}</h2>
 					<h3 className="text-lg font-medium">by {currentItem.track.artist}</h3>
 				</div>
@@ -43,6 +48,11 @@ function renderPlayerContent(player: Player, currentItem: QueueItem, members: Ro
 					<div className="ml-4 border-2 rounded-full border-white/10 overflow-clip">
 						<UserAvatar user={member.user} className="size-8" />
 					</div>
+				</div>
+				<div className="flex items-center gap-4">
+					<span className="text-sm">{humanizedTime}</span>
+					<ProgressBar progress={player.currentTime / currentItem.track.duration} />
+					<span className="text-sm">{humaizedDuration}</span>
 				</div>
 			</div>
 		</div>
