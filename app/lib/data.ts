@@ -30,14 +30,18 @@ export function getParams() {
 // EXPORT THIS I SWEAR TO GOD
 export type DataFunctionOutput = Exclude<ReturnType<unstable_Loader>, Promise<unknown>>
 
-export function effectLoader<Output extends DataFunctionOutput>(
-	effect: Effect.Effect<Output, ThrownRedirect, DataFunctionServices>,
+export function effectLoader<E, Output extends DataFunctionOutput>(
+	effect: Effect.Effect<Output, E | ThrownRedirect, DataFunctionServices>,
 ) {
 	return unstable_defineLoader(async function loader(args) {
 		const result = await pipe(
 			effect,
 			Effect.provideService(DataFunctionContextService, args),
-			Effect.catchTag("ThrownRedirect", (thrown) => Effect.succeed(thrown)),
+			Effect.catchTag("ThrownRedirect", (thrown) => {
+				return thrown instanceof ThrownRedirect
+					? Effect.succeed(thrown)
+					: Effect.dieMessage("what the fuck")
+			}),
 			Effect.runPromise,
 		)
 		if (result instanceof ThrownRedirect) {
