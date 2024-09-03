@@ -8,7 +8,11 @@ import { TextField } from "../features/form/TextField.tsx"
 import { ZodForm } from "../features/form/ZodForm.tsx"
 import { formEffectAction, withSubmissionParser } from "../features/form/helpers.server.ts"
 import { registerSchema } from "../features/form/schema.ts"
-import { getAuthorizedTurntableApi, getTurntableApi, resolveApiResponse } from "../lib/api.ts"
+import {
+	getAuthorizedTurntableApi,
+	getTurntableApi,
+	resolveApiResponse,
+} from "../lib/api.server.ts"
 import { getCookieToken } from "../lib/auth.ts"
 import { effectAction, effectLoader, redirect } from "../lib/data.ts"
 

@@ -11,7 +11,7 @@ import {
 import { unstable_data as data } from "@remix-run/node"
 import { Effect, pipe } from "effect"
 import type { ZodType } from "zod"
-import { TurntableApiError } from "../../lib/api"
+import { TurntableApiError } from "../../lib/api.server"
 import {
 	DataFunctionContextService,
 	type DataFunctionOutput,

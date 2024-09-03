@@ -1,12 +1,13 @@
 import { Outlet, useLoaderData } from "@remix-run/react"
 import { Effect } from "effect"
 import { AppHeader } from "../components/AppHeader.tsx"
-import { getAuthorizedTurntableApi } from "../lib/api.ts"
+import { RealtimeProvider } from "../features/realtime/RealtimeProvider.tsx"
+import { baseUrl, getAuthorizedTurntableApi } from "../lib/api.server.ts"
 import { effectLoader, redirect } from "../lib/data.ts"
 
 export const loader = effectLoader(
 	getAuthorizedTurntableApi().pipe(
-		Effect.map((api) => ({ user: api.user })),
+		Effect.map((api) => ({ user: api.user, baseUrl: baseUrl })),
 		Effect.catchTags({
 			TokenNotFoundError: () => redirect("/login"),
 			InvalidTokenError: () => redirect("/login"),
@@ -15,14 +16,16 @@ export const loader = effectLoader(
 )
 
 export default function Index() {
-	const { user } = useLoaderData<typeof loader>()
+	const { user, baseUrl } = useLoaderData<typeof loader>()
 
 	return (
-		<div>
-			<AppHeader user={user} />
-			<main className="max-w-[1100px] mx-auto mt-16 px-4">
-				<Outlet />
-			</main>
-		</div>
+		<RealtimeProvider baseUrl={baseUrl}>
+			<div>
+				<AppHeader user={user} />
+				<main className="max-w-[1100px] mx-auto mt-16 px-4">
+					<Outlet />
+				</main>
+			</div>
+		</RealtimeProvider>
 	)
 }

@@ -3,7 +3,7 @@ import { TurntableApi } from "../../api/TurntableApi.ts"
 import { ApiError, type CancelablePromise, type User } from "../../api/index.ts"
 import { getToken } from "./auth.ts"
 
-const baseUrl = process.env.TURNTABLE_API_URL || "http://localhost:9050"
+export const baseUrl = process.env.TURNTABLE_API_URL || "http://localhost:9050"
 
 export class TurntableApiError {
 	readonly _tag = "TurntableApiError"

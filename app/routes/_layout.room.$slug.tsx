@@ -1,7 +1,7 @@
 import { useLoaderData } from "@remix-run/react"
 import { Effect } from "effect"
 import { RoomHero } from "../features/room/RoomHero"
-import { getAuthorizedTurntableApi, resolveApiResponse } from "../lib/api"
+import { getAuthorizedTurntableApi, resolveApiResponse } from "../lib/api.server"
 import { effectLoader, getParams } from "../lib/data"
 
 export const loader = effectLoader(

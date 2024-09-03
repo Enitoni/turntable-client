@@ -5,7 +5,7 @@ import { unstable_data as data, redirect as remixRedirect } from "@remix-run/nod
 import type { Params } from "@remix-run/react"
 import type { unstable_Loader } from "@remix-run/server-runtime"
 import { Context, Effect, pipe } from "effect"
-import type { TurntableApiError } from "./api.ts"
+import type { TurntableApiError } from "./api.server.ts"
 
 interface DataFunctionContext {
 	request: Request
@@ -18,6 +18,10 @@ export class DataFunctionContextService extends Context.Tag("DataFunctionService
 >() {}
 
 export type DataFunctionServices = DataFunctionContextService
+
+export function getContext() {
+	return DataFunctionContextService.pipe(Effect.map((context) => context))
+}
 
 export function getRequest() {
 	return DataFunctionContextService.pipe(Effect.map((context) => context.request))
