@@ -1,6 +1,7 @@
 import { useLoaderData } from "@remix-run/react"
 import { Effect } from "effect"
 import { RoomHero } from "../features/room/RoomHero"
+import { RoomMemberList } from "../features/room/RoomMemberList"
 import { getAuthorizedTurntableApi, resolveApiResponse } from "../lib/api.server"
 import { effectLoader, getParams } from "../lib/data"
 
@@ -24,6 +25,13 @@ export default function Index() {
 				<span className="text-base">{room.description}</span>
 			</div>
 			<RoomHero player={room.player} members={room.members} />
+			<div className="flex mt-8">
+				<div className="flex-1" />
+				<div className="flex-1 max-w-[330px]">
+					<h4 className="mb-4 font-bold font-display">In this room</h4>
+					<RoomMemberList room={room} />
+				</div>
+			</div>
 		</div>
 	)
 }
