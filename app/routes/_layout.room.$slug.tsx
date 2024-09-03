@@ -22,7 +22,7 @@ export default function Index() {
 		<div>
 			<div className="mb-6">
 				<h1 className="title">{room.title}</h1>
-				<span className="text-base">{room.description}</span>
+				<span className="text-base mt-[-0.2rem] block">{room.description}</span>
 			</div>
 			<RoomHero room={room} player={room.player} />
 			<div className="flex mt-8">
