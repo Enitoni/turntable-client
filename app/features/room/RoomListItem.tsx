@@ -10,7 +10,7 @@ export function RoomListItem(props: RoomListItemProps) {
 
 	return (
 		<Link to={`/room/${room.slug}`} className="flex p-3 px-4 card">
-			<h2 className="mb-2 text-xl font-bold font-display">{room.title}</h2>
+			<h2 className="mt-1 text-xl font-bold font-display">{room.title}</h2>
 		</Link>
 	)
 }
