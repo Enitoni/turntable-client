@@ -10,7 +10,7 @@ export function UserAvatar(props: UserAvatarProps) {
 	const { user, className } = props
 	return (
 		<div className={twMerge("flex items-center justify-center bg-neutral-dark-100", className)}>
-			<span className="font-bold uppercase font-display">{user.displayName[0] ?? "?"}</span>
+			<span className="mt-1 font-bold uppercase font-display">{user.displayName[0] ?? "?"}</span>
 		</div>
 	)
 }
