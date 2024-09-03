@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { Player, QueueItem, RoomMember } from "../../../api"
+import type { Player, QueueItem, Room, RoomMember } from "../../../api"
 import { ProgressBar } from "../../components/ProgressBar"
 import { humanizeSeconds } from "../core/helpers"
 import { useServerEvent } from "../realtime/hooks"
@@ -8,16 +8,16 @@ import { UserAvatar } from "../user/UserAvatar"
 
 export interface RoomHeroProps {
 	player?: Player | null
-	members: RoomMember[]
+	room: Room
 }
 
 export function RoomHero(props: RoomHeroProps) {
-	const { player, members } = props
+	const { player, room } = props
 
 	return (
 		<div className="p-6 card">
 			{player?.currentItem
-				? renderPlayerContent(player, player.currentItem, members)
+				? renderPlayerContent(player, player.currentItem, room)
 				: renderEmptyStateContent()}
 		</div>
 	)
@@ -31,16 +31,16 @@ function renderEmptyStateContent() {
 	)
 }
 
-function renderPlayerContent(player: Player, currentItem: QueueItem, members: RoomMember[]) {
-	const member = members.find((member) => member.id === currentItem.userId) as RoomMember
+function renderPlayerContent(player: Player, currentItem: QueueItem, room: Room) {
+	const member = room.members.find((member) => member.id === currentItem.userId) as RoomMember
 
 	return (
 		<div className="flex">
 			<TrackCover className="size-[200px]" track={currentItem.track} />
 			<div className="relative flex flex-col flex-1 py-1 ml-6">
 				<div className="flex-1">
-					<h2 className="text-xl font-bold leading-6">{currentItem.track.title}</h2>
-					<h3 className="text-lg font-medium">by {currentItem.track.artist}</h3>
+					<h2 className="text-lg font-bold leading-6">{currentItem.track.title}</h2>
+					<h3 className="font-medium ">by {currentItem.track.artist}</h3>
 				</div>
 				<div className="absolute top-0 right-0 flex items-center">
 					<span className="font-semibold">{member.user.displayName} queued this</span>
@@ -48,7 +48,7 @@ function renderPlayerContent(player: Player, currentItem: QueueItem, members: Ro
 						<UserAvatar user={member.user} className="size-8" />
 					</div>
 				</div>
-				<PlayerProgress player={player} currentItem={currentItem} />
+				<PlayerProgress player={player} currentItem={currentItem} roomId={room.id} />
 			</div>
 		</div>
 	)
@@ -57,10 +57,11 @@ function renderPlayerContent(player: Player, currentItem: QueueItem, members: Ro
 interface PlayerProgressProps {
 	player: Player
 	currentItem: QueueItem
+	roomId: number
 }
 
 function PlayerProgress(props: PlayerProgressProps) {
-	const { player, currentItem } = props
+	const { player, currentItem, roomId } = props
 	const [currentTime, setCurrentTime] = useState(player.currentTime)
 
 	const humanizedTime = humanizeSeconds(currentTime)
@@ -68,7 +69,7 @@ function PlayerProgress(props: PlayerProgressProps) {
 
 	useServerEvent((event) => {
 		// @ts-expect-error: event type is wrong
-		if (event.type === "player-time-update") {
+		if (event.type === "player-time-update" && event.room_id === roomId) {
 			// @ts-expect-error: event type is wrong
 			setCurrentTime(event.position)
 		}

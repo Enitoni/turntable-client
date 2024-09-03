@@ -24,7 +24,7 @@ export default function Index() {
 				<h1 className="title">{room.title}</h1>
 				<span className="text-base">{room.description}</span>
 			</div>
-			<RoomHero player={room.player} members={room.members} />
+			<RoomHero room={room} player={room.player} />
 			<div className="flex mt-8">
 				<div className="flex-1" />
 				<div className="flex-1 max-w-[330px]">
