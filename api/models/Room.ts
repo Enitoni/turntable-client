@@ -11,6 +11,7 @@ export type Room = {
     id: number;
     members: Array<RoomMember>;
     player?: Player | null;
+    slug: string;
     title: string;
 };
 
