@@ -1,6 +1,8 @@
 import { useLoaderData } from "@remix-run/react"
 import { Effect } from "effect"
 import { useState } from "react"
+import type { Player } from "../../api"
+import { PlayerBar } from "../features/player/PlayerBar"
 import { useServerEvent } from "../features/realtime/hooks"
 import { QueueList } from "../features/room/QueueList"
 import { RoomHero } from "../features/room/RoomHero"
@@ -47,6 +49,9 @@ export default function Index() {
 					<h4 className="mb-4 font-bold font-display">In this room</h4>
 					<RoomMemberList room={room} />
 				</div>
+			</div>
+			<div className="sticky bottom-8">
+				<PlayerBar roomId={room.id} player={room.player as Player | undefined} />
 			</div>
 		</div>
 	)
