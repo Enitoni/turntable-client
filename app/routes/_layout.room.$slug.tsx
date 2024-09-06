@@ -1,6 +1,6 @@
 import { useLoaderData } from "@remix-run/react"
 import { Effect } from "effect"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { Player } from "../../api"
 import { PlayerBar } from "../features/player/PlayerBar"
 import { useServerEvent } from "../features/realtime/hooks"
@@ -33,6 +33,16 @@ export default function Index() {
 			setQueue({ items: event.items, history: event.history })
 		}
 	})
+
+	useEffect(() => {
+		const queueItem = queue.items[0]
+
+		if (queueItem) {
+			document.title = `${queueItem.track.title} | ${room.title} - turntable`
+		} else {
+			document.title = `${room.title} - turntable`
+		}
+	}, [queue, room])
 
 	return (
 		<div>
