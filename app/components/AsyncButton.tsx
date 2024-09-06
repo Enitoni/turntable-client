@@ -7,7 +7,7 @@ export interface AsyncButtonProps extends React.ComponentPropsWithoutRef<"button
 }
 
 export function AsyncButton(props: AsyncButtonProps) {
-	const { children, onClick, onError, ...rest } = props
+	const { onClick, onError, ...rest } = props
 	const [isPending, setIsPending] = useState(false)
 
 	const disabled = isPending || rest.disabled
