@@ -32,7 +32,7 @@ export function PlayButton(props: PlayButtonProps) {
 	const renderIcon = () => {
 		if (playerState === "buffering") {
 			return (
-				<div className="size-6">
+				<div className="size-5">
 					<Spinner />
 				</div>
 			)
