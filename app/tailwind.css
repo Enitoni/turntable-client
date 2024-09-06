@@ -11,7 +11,7 @@
 }
 
 .icon-button {
-  @apply size-6 ;
+  @apply transition-colors size-6 text-neutral-light-500 hover:text-white disabled:opacity-50 disabled:pointer-events-none;
 }
 
 .icon-button > svg {
