@@ -26,7 +26,6 @@ export function RoomMemberList(props: RoomMemberListProps) {
 		if (event.type === "user-disconnected" && event.room_id === room.id) {
 			// @ts-expect-error: event type is wrong
 			connections.current[event.user_id]?.delete(event.source)
-			console.log(connections)
 			forceUpdate((x) => x + 1)
 		}
 
@@ -34,7 +33,6 @@ export function RoomMemberList(props: RoomMemberListProps) {
 		if (event.type === "user-connected" && event.room_id === room.id) {
 			// @ts-expect-error: event type is wrong
 			connections.current[event.user_id]?.add(event.source)
-			console.log(connections)
 			forceUpdate((x) => x + 1)
 		}
 	})
