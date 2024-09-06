@@ -9,7 +9,7 @@ export function QueueList(props: QueueListProps) {
 	const { queue } = props
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-6">
 			{queue.items.slice(1).map((item) => (
 				<QueueListItem key={item.track.id} item={item} />
 			))}
