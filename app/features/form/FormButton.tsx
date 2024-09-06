@@ -19,7 +19,7 @@ export function FormButton(props: FormButtonProps) {
 	const renderIcon = () => {
 		if (loading) {
 			return (
-				<div className="button-icon flex items-center p-0.5">
+				<div className="icon flex items-center p-0.5">
 					<Spinner />
 				</div>
 			)
@@ -27,7 +27,7 @@ export function FormButton(props: FormButtonProps) {
 
 		if (iconSlot) {
 			const clonedIcon = React.cloneElement(iconSlot, {
-				className: "button-icon",
+				className: "icon",
 			})
 
 			return clonedIcon
