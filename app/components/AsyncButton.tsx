@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Button } from "./Button"
 
 export interface AsyncButtonProps extends React.ComponentPropsWithoutRef<"button"> {
-	onClick: () => Promise<void>
+	onClick: () => Promise<unknown>
 	onError?: (error: unknown) => void
 }
 
