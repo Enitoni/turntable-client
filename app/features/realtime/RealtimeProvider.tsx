@@ -26,8 +26,6 @@ export function RealtimeProvider(props: RealtimeProviderProps) {
 		eventSource.onmessage = (event) => {
 			const data = JSON.parse(event.data) as ServerEvent
 
-			console.log(data)
-
 			for (const listener of listeners.current) {
 				listener(data)
 			}
