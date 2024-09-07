@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { TextInput } from "../input/TextInput"
+import { addToQueue } from "../room/actions"
 
 export interface QueueSubmissionFieldProps {
 	roomId: number
@@ -21,13 +22,7 @@ export function QueueSubmissionField(props: QueueSubmissionFieldProps) {
 
 			setIsSubmitting(true)
 
-			fetch("/api/queue-submit", {
-				method: "POST",
-				body: JSON.stringify({
-					roomId: roomId,
-					url: input,
-				}),
-			})
+			addToQueue(roomId, input)
 				.then((response) => {
 					if (response.ok) {
 						setInput("")

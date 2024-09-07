@@ -3,6 +3,7 @@ import type { Player } from "../../../api"
 import { AsyncButton } from "../../components/AsyncButton"
 import { Spinner } from "../core/Spinner"
 import { useServerEvent } from "../realtime/hooks"
+import { performRoomAction } from "../room/actions"
 
 export interface PlayButtonProps {
 	roomId: number
@@ -21,13 +22,7 @@ export function PlayButton(props: PlayButtonProps) {
 	})
 
 	const handleClick = async () =>
-		fetch("/api/room-action", {
-			method: "POST",
-			body: JSON.stringify({
-				roomId: roomId,
-				action: playerState === "playing" ? "pause" : "play",
-			}),
-		})
+		performRoomAction(roomId, playerState === "playing" ? "pause" : "play")
 
 	const renderIcon = () => {
 		if (playerState === "buffering") {

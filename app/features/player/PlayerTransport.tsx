@@ -1,6 +1,7 @@
 import { SkipBack, SkipForward } from "lucide-react"
 import type { Player } from "../../../api"
 import { AsyncButton } from "../../components/AsyncButton"
+import { performRoomAction } from "../room/actions"
 import { PlayButton } from "./PlayButton"
 
 export interface PlayerTransportProps {
@@ -11,14 +12,7 @@ export interface PlayerTransportProps {
 export function PlayerTransport(props: PlayerTransportProps) {
 	const { roomId, player } = props
 
-	const navigate = (direction: string) =>
-		fetch("/api/room-action", {
-			method: "POST",
-			body: JSON.stringify({
-				roomId: roomId,
-				action: direction,
-			}),
-		})
+	const navigate = (direction: string) => performRoomAction(roomId, direction)
 
 	return (
 		<div className="flex items-center gap-4">
