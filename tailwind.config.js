@@ -1,3 +1,4 @@
+import containerQueries from "@tailwindcss/container-queries"
 import { darken } from "polished"
 import defaultTheme from "tailwindcss/defaultTheme.js"
 
@@ -45,5 +46,5 @@ export default {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [containerQueries],
 }

@@ -40,6 +40,7 @@
     "@playwright/test": "^1.46.1",
     "@remix-run/dev": "^2.11.2",
     "@remix-run/server-runtime": "^2.11.2",
+    "@tailwindcss/container-queries": "^0.1.1",
     "@types/bun": "^1.1.8",
     "@types/node": "^20.16.2",
     "@types/react": "^18.3.5",

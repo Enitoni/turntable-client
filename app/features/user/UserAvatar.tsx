@@ -11,11 +11,13 @@ export function UserAvatar(props: UserAvatarProps) {
 	return (
 		<div
 			className={twMerge(
-				"flex items-center select-none justify-center bg-neutral-dark-100",
+				"flex items-center select-none @container justify-center bg-neutral-dark-100",
 				className,
 			)}
 		>
-			<span className="mt-1 font-bold uppercase font-display">{user.displayName[0] ?? "?"}</span>
+			<span className="mt-[14cqw] font-bold uppercase font-display text-[50cqw]">
+				{user.displayName[0] ?? "?"}
+			</span>
 		</div>
 	)
 }
