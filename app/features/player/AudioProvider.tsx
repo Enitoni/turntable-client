@@ -33,6 +33,8 @@ export function AudioProvider(props: React.PropsWithChildren<{ streamUrl: string
 	}, [streamUrl])
 
 	const handleError = (e: unknown) => {
+		globalAudio.src = ""
+
 		if (e instanceof DOMException && e.name === "NotAllowedError") {
 			setStatus("autoplay-error")
 			return
@@ -45,6 +47,7 @@ export function AudioProvider(props: React.PropsWithChildren<{ streamUrl: string
 	const handleRequestConnection = () => {
 		setStatus("connecting")
 
+		globalAudio.src = `${streamUrl}?x=${Date.now()}`
 		globalAudio
 			.play()
 			.then(() => setStatus("connected"))
