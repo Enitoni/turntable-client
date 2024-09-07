@@ -34,7 +34,7 @@ export function RealtimeProvider(props: RealtimeProviderProps) {
 		return () => {
 			eventSource.close()
 		}
-	})
+	}, [props.baseUrl])
 
 	return (
 		<RealtimeContext.Provider
