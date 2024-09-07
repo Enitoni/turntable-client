@@ -7,6 +7,16 @@ export const performRoomAction = (roomId: number, action: string) =>
 		}),
 	})
 
+export const seekTo = (roomId: number, to: number) =>
+	fetch("/api/room-action", {
+		method: "POST",
+		body: JSON.stringify({
+			roomId,
+			action: "seek",
+			to,
+		}),
+	})
+
 export const addToQueue = (roomId: number, url: string) =>
 	fetch("/api/queue-submit", {
 		method: "POST",

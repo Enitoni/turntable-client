@@ -1,8 +1,5 @@
-import { useState } from "react"
 import type { Player, QueueItem, Room, RoomMember } from "../../../api"
-import { ProgressBar } from "../../components/ProgressBar"
-import { humanizeSeconds } from "../core/helpers"
-import { useServerEvent } from "../realtime/hooks"
+import { SeekBar } from "../player/SeekBar"
 import { TrackCover } from "../track/TrackCover"
 import { UserAvatar } from "../user/UserAvatar"
 
@@ -53,38 +50,8 @@ function renderPlayerContent(player: Player, currentItem: QueueItem, room: Room)
 						</div>
 					</div>
 				</div>
-				<PlayerProgress player={player} currentItem={currentItem} roomId={room.id} />
+				<SeekBar player={player} currentItem={currentItem} roomId={room.id} />
 			</div>
-		</div>
-	)
-}
-
-interface PlayerProgressProps {
-	player: Player
-	currentItem: QueueItem
-	roomId: number
-}
-
-function PlayerProgress(props: PlayerProgressProps) {
-	const { player, currentItem, roomId } = props
-	const [currentTime, setCurrentTime] = useState(player.currentTime)
-
-	const humanizedTime = humanizeSeconds(currentTime)
-	const humaizedDuration = humanizeSeconds(currentItem.track.duration)
-
-	useServerEvent((event) => {
-		// @ts-expect-error: event type is wrong
-		if (event.type === "player-time-update" && event.room_id === roomId) {
-			// @ts-expect-error: event type is wrong
-			setCurrentTime(event.position)
-		}
-	})
-
-	return (
-		<div className="flex items-center gap-4">
-			<span className="text-sm font-semibold">{humanizedTime}</span>
-			<ProgressBar progress={currentTime / currentItem.track.duration} />
-			<span className="text-sm font-semibold">{humaizedDuration}</span>
 		</div>
 	)
 }
