@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { clientOnly$ } from "vite-env-only/macros"
+import { useLocalStorage } from "../core/hooks"
 
 const globalAudio = clientOnly$(new Audio()) as HTMLAudioElement
 const globalAudioContext = clientOnly$(new AudioContext())
@@ -7,8 +8,12 @@ const globalAudioContext = clientOnly$(new AudioContext())
 export function AudioProvider(props: React.PropsWithChildren<{ streamUrl: string }>) {
 	const { streamUrl } = props
 
-	const [volume, setVolume] = useState(globalAudio?.volume ?? 1)
+	const [volume, setVolume] = useLocalStorage("volume", globalAudio?.volume ?? 1)
 	const [muted, setMuted] = useState(globalAudio?.muted ?? false)
+
+	useEffect(() => {
+		globalAudio.volume = volume
+	}, [volume])
 
 	useEffect(() => {
 		globalAudio.src = `${streamUrl}?x=${Date.now()}`
@@ -20,7 +25,6 @@ export function AudioProvider(props: React.PropsWithChildren<{ streamUrl: string
 	}, [streamUrl])
 
 	const handleSetVolume = (volume: number) => {
-		globalAudio.volume = volume
 		setVolume(volume)
 	}
 
