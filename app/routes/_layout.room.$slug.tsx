@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import type { Player } from "../../api"
 import { STREAM_KEY_SOURCE_NAME } from "../features/core/constants"
 import { AudioProvider } from "../features/player/AudioProvider"
+import { NotAllowedWarning } from "../features/player/NotAllowedWarning"
 import { PlayerBar } from "../features/player/PlayerBar"
 import { useServerEvent } from "../features/realtime/hooks"
 import { QueueList } from "../features/room/QueueList"
@@ -72,6 +73,7 @@ export default function Index() {
 
 	return (
 		<AudioProvider streamUrl={streamUrl}>
+			<NotAllowedWarning />
 			<div className="mb-6">
 				<h1 className="title">{room.title}</h1>
 				<span className="text-base mt-[-0.2rem] block">{room.description}</span>
