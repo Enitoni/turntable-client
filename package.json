@@ -22,6 +22,7 @@
     "@faker-js/faker": "^8.4.1",
     "@fontsource-variable/kufam": "^5.0.20",
     "@fontsource/lato": "^5.0.22",
+    "@radix-ui/react-slider": "^1.2.0",
     "@remix-run/node": "^2.11.2",
     "@remix-run/react": "^2.11.2",
     "@remix-run/serve": "^2.11.2",
