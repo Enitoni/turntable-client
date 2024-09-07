@@ -9,7 +9,7 @@ export interface AppHeaderProps {
 
 export function AppHeader(props: AppHeaderProps) {
 	return (
-		<header className="flex items-center justify-between h-16 px-4 bg-darkish">
+		<header className="sticky top-0 flex items-center justify-between h-16 px-4 bg-darkish">
 			<Link to="/">
 				<AppLogo className="w-auto h-10" />
 			</Link>
