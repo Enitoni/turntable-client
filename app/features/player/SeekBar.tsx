@@ -45,17 +45,17 @@ export function SeekBar(props: PlayerProgressProps) {
 	return (
 		<div
 			className={twMerge(
-				"flex items-center gap-4 transition",
+				"flex items-center gap-4 transition ",
 				isSeeking && "opacity-50 pointer-events-none",
 			)}
 		>
-			<span className="text-sm font-semibold">{humanizedTime}</span>
+			<span className="text-sm font-semibold tabular">{humanizedTime}</span>
 			<SliderInput
 				disabled={isSeeking}
 				onValueCommit={handleSeek}
 				value={usedValue / currentItem.track.duration}
 			/>
-			<span className="text-sm font-semibold">{humaizedDuration}</span>
+			<span className="text-sm font-semibold tabular-nums">{humaizedDuration}</span>
 		</div>
 	)
 }
