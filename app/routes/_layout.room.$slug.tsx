@@ -45,13 +45,13 @@ export default function Index() {
 	}, [queue, room])
 
 	return (
-		<div>
+		<>
 			<div className="mb-6">
 				<h1 className="title">{room.title}</h1>
 				<span className="text-base mt-[-0.2rem] block">{room.description}</span>
 			</div>
 			<RoomHero room={room} currentQueueItem={queue.items[0]} player={room.player} />
-			<div className="flex gap-6 mt-8">
+			<div className="flex flex-1 gap-6 mt-8">
 				<div className="flex-1">
 					<QueueList queue={queue} />
 				</div>
@@ -63,6 +63,6 @@ export default function Index() {
 			<div className="sticky bottom-8">
 				<PlayerBar roomId={room.id} player={room.player as Player | undefined} />
 			</div>
-		</div>
+		</>
 	)
 }

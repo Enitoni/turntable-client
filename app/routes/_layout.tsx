@@ -22,7 +22,7 @@ export default function Index() {
 		<RealtimeProvider baseUrl={baseUrl}>
 			<div>
 				<AppHeader user={user} />
-				<main className="max-w-[1100px] mx-auto mt-16 px-4">
+				<main className="max-w-[1100px] min-h-[calc(100vh-128px)] mx-auto mt-16 px-4 flex flex-col">
 					<Outlet />
 				</main>
 			</div>
