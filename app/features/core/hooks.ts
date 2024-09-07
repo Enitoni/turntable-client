@@ -1,13 +1,15 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { clientOnly$ } from "vite-env-only/macros"
 
 const storage = clientOnly$(localStorage)
 
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
-	const [storedValue, setStoredValue] = useState<T>(() => {
+	const [storedValue, setStoredValue] = useState<T>(initialValue)
+
+	useEffect(() => {
 		const value = storage?.getItem(key) ?? null
-		return value ? JSON.parse(value) : initialValue
-	})
+		setStoredValue(value ? JSON.parse(value) : initialValue)
+	}, [key, initialValue])
 
 	const setValue = (value: T) => {
 		setStoredValue(value)
