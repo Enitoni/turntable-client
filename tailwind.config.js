@@ -35,6 +35,9 @@ export default {
 			DEFAULT: "4px 4px 10px 0 rgba(0, 0, 0, 0.1)",
 		},
 		extend: {
+			backgroundImage: {
+				"gradient-angled": "linear-gradient(20deg, var(--tw-gradient-stops))",
+			},
 			colors: {
 				...colors,
 				neutral: {
