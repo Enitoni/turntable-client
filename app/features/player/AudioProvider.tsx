@@ -15,7 +15,7 @@ export function AudioProvider(props: React.PropsWithChildren<{ streamUrl: string
 	const [status, setStatus] = useState<Status>("idle")
 
 	useEffect(() => {
-		globalAudio.volume = volume
+		globalAudio.volume = volume ** 4
 	}, [volume])
 
 	useEffect(() => {
