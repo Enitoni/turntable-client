@@ -2,7 +2,7 @@ import { useLoaderData } from "@remix-run/react"
 import { Effect } from "effect"
 import { RoomListItem } from "../features/room/RoomListItem"
 import { getAuthorizedTurntableApi, resolveApiResponse } from "../lib/api.server"
-import { effectLoader } from "../lib/data"
+import { effectLoader } from "../lib/data.server"
 
 export const loader = effectLoader(
 	Effect.gen(function* () {

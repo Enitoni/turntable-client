@@ -3,7 +3,7 @@ import { Effect } from "effect"
 import { AppHeader } from "../components/AppHeader.tsx"
 import { RealtimeProvider } from "../features/realtime/RealtimeProvider.tsx"
 import { baseUrl, getAuthorizedTurntableApi } from "../lib/api.server.ts"
-import { effectLoader, redirect } from "../lib/data.ts"
+import { effectLoader, redirect } from "../lib/data.server.ts"
 
 export const loader = effectLoader(
 	getAuthorizedTurntableApi().pipe(

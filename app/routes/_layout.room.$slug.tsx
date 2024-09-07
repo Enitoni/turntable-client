@@ -11,7 +11,7 @@ import { QueueList } from "../features/room/QueueList"
 import { RoomHero } from "../features/room/RoomHero"
 import { RoomMemberList } from "../features/room/RoomMemberList"
 import { baseUrl, getAuthorizedTurntableApi, resolveApiResponse } from "../lib/api.server"
-import { effectLoader, getParams } from "../lib/data"
+import { effectLoader, getParams } from "../lib/data.server"
 
 const getOrCreateStreamKey = (roomId: number) =>
 	Effect.gen(function* () {

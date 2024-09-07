@@ -1,6 +1,6 @@
 import { createCookie } from "@remix-run/node"
 import { Effect } from "effect"
-import { getRequest } from "./data.ts"
+import { getRequest } from "./data.server.ts"
 
 const tokenCookie = createCookie("token", {
 	path: "/",

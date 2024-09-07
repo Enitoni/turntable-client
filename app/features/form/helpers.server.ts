@@ -18,7 +18,7 @@ import {
 	type DataFunctionServices,
 	ThrownRedirect,
 	getRequest,
-} from "../../lib/data"
+} from "../../lib/data.server"
 
 export class InvalidFormError {
 	readonly _tag = "InvalidForm"
