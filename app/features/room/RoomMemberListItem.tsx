@@ -1,6 +1,7 @@
 import { Crown } from "lucide-react"
 import { twMerge } from "tailwind-merge"
 import type { RoomMember } from "../../../api"
+import { STREAM_KEY_SOURCE_NAME } from "../core/constants"
 import { UserAvatar } from "../user/UserAvatar"
 
 export interface RoomMemberListItemProps {
@@ -11,7 +12,12 @@ export interface RoomMemberListItemProps {
 export function RoomMemberListItem(props: RoomMemberListItemProps) {
 	const { member, connection } = props
 
-	const subtext = connection ? `Listening on ${connection}` : "Disconnected"
+	const subtext = connection
+		? connection === STREAM_KEY_SOURCE_NAME
+			? "Listening"
+			: `Listening on ${connection}`
+		: "Disconnected"
+
 	const disconnectedClass = connection ? null : "opacity-50"
 
 	return (
@@ -24,7 +30,7 @@ export function RoomMemberListItem(props: RoomMemberListItemProps) {
 					<span className="font-medium">{member.user.displayName}</span>
 					{member.owner ? <Crown className="text-golden size-4" /> : null}
 				</div>
-				<span className="text-sm font-bold mt-[-0.1rem] text-neutral-light-200 flex">
+				<span className="text-sm font-medium mt-[-0.1rem] text-neutral-light-500 flex">
 					{subtext}
 				</span>
 			</div>
