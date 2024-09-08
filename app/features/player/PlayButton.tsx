@@ -26,11 +26,7 @@ export function PlayButton(props: PlayButtonProps) {
 
 	const renderIcon = () => {
 		if (playerState === "buffering") {
-			return (
-				<div className="size-5">
-					<Spinner />
-				</div>
-			)
+			return <Spinner className="size-5" />
 		}
 
 		if (playerState === "playing") {

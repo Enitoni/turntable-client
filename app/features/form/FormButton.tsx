@@ -18,11 +18,7 @@ export function FormButton(props: FormButtonProps) {
 
 	const renderIcon = () => {
 		if (loading) {
-			return (
-				<div className="icon flex items-center p-0.5">
-					<Spinner />
-				</div>
-			)
+			return <Spinner className="size-5" />
 		}
 
 		if (iconSlot) {
