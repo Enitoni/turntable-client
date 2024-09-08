@@ -39,7 +39,7 @@ function renderPlayerContent(player: Player, currentItem: QueueItem, room: Room)
 				<div className="flex items-start flex-1">
 					<div className="flex-1">
 						<h2 className="text-lg font-bold leading-6 line-clamp-2 text-ellipsis">
-							{currentItem.track.title}
+							<a target="_blank" href={currentItem.track.canonical} rel="noopener noreferrer">{currentItem.track.title}</a>
 						</h2>
 						<h3 className="font-medium ">by {currentItem.track.artist}</h3>
 					</div>
