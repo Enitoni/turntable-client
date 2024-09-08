@@ -23,7 +23,7 @@ export function RoomHero(props: RoomHeroProps) {
 
 function renderEmptyStateContent() {
 	return (
-		<div className="flex items-center justify-center min-h-[248px]">
+		<div className="flex items-center justify-center h-[200px]">
 			<span className="text-lg font-bold font-display">Nothing is playing</span>
 		</div>
 	)
@@ -39,7 +39,9 @@ function renderPlayerContent(player: Player, currentItem: QueueItem, room: Room)
 				<div className="flex items-start flex-1">
 					<div className="flex-1">
 						<h2 className="text-lg font-bold leading-6 line-clamp-2 text-ellipsis">
-							<a target="_blank" href={currentItem.track.canonical} rel="noopener noreferrer">{currentItem.track.title}</a>
+							<a target="_blank" href={currentItem.track.canonical} rel="noopener noreferrer">
+								{currentItem.track.title}
+							</a>
 						</h2>
 						<h3 className="font-medium ">by {currentItem.track.artist}</h3>
 					</div>
