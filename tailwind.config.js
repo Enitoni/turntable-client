@@ -9,6 +9,7 @@ const colors = {
 	darkest: "#060A0E",
 	golden: "#FFBF1C",
 	invalid: "#EA3757",
+	success: "#29CA60",
 }
 
 const neutralLights = {
