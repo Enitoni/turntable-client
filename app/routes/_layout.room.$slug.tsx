@@ -38,12 +38,14 @@ export const loader = effectLoader(
 		const api = yield* getAuthorizedTurntableApi()
 		const params = yield* getParams()
 
-		const room = yield* resolveApiResponse(api.rooms.room(params.slug as string))
-		const queue = yield* resolveApiResponse(api.rooms.queue(room.id))
+		const initialRoom = yield* resolveApiResponse(api.rooms.room(params.slug as string))
+		const queue = yield* resolveApiResponse(api.rooms.queue(initialRoom.id))
 
-		const streamKey = yield* getOrCreateStreamKey(room.id)
-
+		const streamKey = yield* getOrCreateStreamKey(initialRoom.id)
 		const streamUrl = `${baseUrl}/v1/streams/${streamKey.token}`
+
+		// FIXME: A workaround to player being null before getting the queue, but existing afterwards
+		const room = yield* resolveApiResponse(api.rooms.room(params.slug as string))
 
 		return yield* Effect.succeed({ room, queue, streamUrl })
 	}),
