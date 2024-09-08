@@ -5,7 +5,8 @@ import { unstable_data as data, redirect as remixRedirect } from "@remix-run/nod
 import type { Params } from "@remix-run/react"
 import type { unstable_Loader } from "@remix-run/server-runtime"
 import { Context, Effect, pipe } from "effect"
-import type { TurntableApiError } from "./api.server.ts"
+import type { InvalidTokenError, TurntableApiError } from "./api.server.ts"
+import type { TokenNotFoundError } from "./auth.ts"
 
 interface DataFunctionContext {
 	request: Request
@@ -58,7 +59,7 @@ export function effectLoader<E, Output extends DataFunctionOutput>(
 export function effectAction<Output extends DataFunctionOutput>(
 	effect: Effect.Effect<
 		Output,
-		ThrownRedirect | TurntableApiError | ParseError,
+		ThrownRedirect | TurntableApiError | TokenNotFoundError | InvalidTokenError | ParseError,
 		DataFunctionServices
 	>,
 ) {
@@ -75,6 +76,12 @@ export function effectAction<Output extends DataFunctionOutput>(
 							{ status: error.details.status === 400 ? 500 : error.details.status },
 						),
 					)
+				},
+				TokenNotFoundError: () => {
+					return redirect("/login")
+				},
+				InvalidTokenError: () => {
+					return redirect("/login")
 				},
 				ParseError: (error) => {
 					return Effect.succeed(data({ error: error.message }, { status: 422 }))
