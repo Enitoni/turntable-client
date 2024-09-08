@@ -1,6 +1,6 @@
-import { json } from "@remix-run/node"
+import { json, unstable_data } from "@remix-run/node"
 import { Effect } from "effect"
-import { getAuthorizedTurntableApi } from "../lib/api.server"
+import { getAuthorizedTurntableApi, resolveApiResponse } from "../lib/api.server"
 import { effectAction, getRequest } from "../lib/data.server"
 
 export const action = effectAction(
@@ -11,8 +11,12 @@ export const action = effectAction(
 		const body = yield* Effect.promise(() => request.json())
 		const { roomId, ...rest } = body
 
-		yield* Effect.promise(() => api.rooms.performRoomAction(roomId, rest))
-
-		return yield* Effect.succeed(json({}))
+		return yield* resolveApiResponse(api.rooms.performRoomAction(roomId, rest)).pipe(
+			Effect.matchEffect({
+				onSuccess: () => Effect.succeed(unstable_data({}, { status: 200 })),
+				onFailure: (error) =>
+					Effect.succeed(unstable_data(error.details.body, { status: error.details.status })),
+			}),
+		)
 	}),
 )
