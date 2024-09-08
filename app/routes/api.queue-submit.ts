@@ -14,8 +14,11 @@ export const action = effectAction(
 		return yield* resolveApiResponse(api.rooms.addToQueue(roomId, { query: [url] })).pipe(
 			Effect.matchEffect({
 				onSuccess: () => Effect.succeed(unstable_data({}, { status: 200 })),
-				onFailure: (error) =>
-					Effect.succeed(unstable_data(error.details.body, { status: error.details.status })),
+				onFailure: (error) => {
+					return Effect.succeed(
+						json({ message: error.details.body }, { status: error.details.status }),
+					)
+				},
 			}),
 		)
 	}),
