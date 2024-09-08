@@ -30,7 +30,7 @@ function renderEmptyStateContent() {
 }
 
 function renderPlayerContent(player: Player, currentItem: QueueItem, room: Room) {
-	const member = room.members.find((member) => member.id === currentItem.userId) as RoomMember
+	const member = room.members.find((member) => member.user.id === currentItem.userId) as RoomMember
 
 	return (
 		<div className="flex">
