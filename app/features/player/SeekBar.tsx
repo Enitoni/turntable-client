@@ -18,11 +18,13 @@ export function SeekBar(props: PlayerProgressProps) {
 	const [currentTime, setCurrentTime] = useState(player.currentTime)
 
 	const [seekValue, setSeekValue] = useState(0)
+	const [isScrubbing, setIsScrubbing] = useState(false)
 	const [isSeeking, setIsSeeking] = useState(false)
 
 	const usedValue = isSeeking ? seekValue : currentTime
+	const usedTimeValue = isScrubbing ? seekValue : currentTime
 
-	const humanizedTime = humanizeSeconds(usedValue)
+	const humanizedTime = humanizeSeconds(usedTimeValue)
 	const humaizedDuration = humanizeSeconds(currentItem.track.duration)
 
 	useServerEvent((event) => {
@@ -35,24 +37,28 @@ export function SeekBar(props: PlayerProgressProps) {
 
 	const handleSeek = (value: number) => {
 		setSeekValue(value * currentItem.track.duration)
+		setIsScrubbing(false)
 		setIsSeeking(true)
 
 		seekTo(roomId, value * currentItem.track.duration).finally(() => {
-			setTimeout(() => setIsSeeking(false), 1000)
+			setTimeout(() => setIsSeeking(false), 50)
 		})
+	}
+
+	const handleScrub = (value: number) => {
+		setSeekValue(value * currentItem.track.duration)
+		setIsScrubbing(true)
 	}
 
 	return (
 		<div
-			className={twMerge(
-				"flex items-center gap-4 transition ",
-				isSeeking && "opacity-50 pointer-events-none",
-			)}
+			className={twMerge("flex items-center gap-4 transition ", isSeeking && "pointer-events-none")}
 		>
 			<span className="text-sm font-semibold tabular">{humanizedTime}</span>
 			<SliderInput
 				disabled={isSeeking}
 				onValueCommit={handleSeek}
+				onValueChange={handleScrub}
 				value={usedValue / currentItem.track.duration}
 			/>
 			<span className="text-sm font-semibold tabular-nums">{humaizedDuration}</span>
