@@ -22,7 +22,7 @@ export function SeekBar(props: PlayerProgressProps) {
 	const [isSeeking, setIsSeeking] = useState(false)
 
 	const usedValue = isSeeking ? seekValue : currentTime
-	const usedTimeValue = isScrubbing ? seekValue : currentTime
+	const usedTimeValue = isScrubbing ? seekValue : usedValue
 
 	const humanizedTime = humanizeSeconds(usedTimeValue)
 	const humaizedDuration = humanizeSeconds(currentItem.track.duration)
