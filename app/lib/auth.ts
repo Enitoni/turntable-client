@@ -1,5 +1,5 @@
 import { createCookie } from "@remix-run/node"
-import { Effect } from "effect"
+import { Duration, Effect } from "effect"
 import { getRequest } from "./data.server.ts"
 
 const tokenCookie = createCookie("token", {
@@ -7,6 +7,7 @@ const tokenCookie = createCookie("token", {
 	httpOnly: true,
 	sameSite: "lax",
 	secure: process.env.NODE_ENV === "production",
+	maxAge: Duration.toSeconds(Duration.days(7)),
 })
 
 export class TokenNotFoundError {
