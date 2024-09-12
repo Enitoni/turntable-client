@@ -81,17 +81,19 @@ export default function Index() {
 				<span className="text-base mt-[-0.2rem] block">{room.description}</span>
 			</div>
 			<RoomHero room={room} currentQueueItem={queue.items[0]} player={room.player} />
-			<div className="flex flex-1 gap-6 mt-8">
-				<div className="flex-1">
-					<QueueList queue={queue} />
+			<div className="flex flex-col flex-1 gap-6">
+				<div className="flex flex-1 gap-6 mt-8">
+					<div className="flex-1">
+						<QueueList queue={queue} />
+					</div>
+					<div className="flex-shrink-0 min-w-[330px]">
+						<h4 className="mb-4 font-bold font-display">In this room</h4>
+						<RoomMemberList room={room} />
+					</div>
 				</div>
-				<div className="flex-shrink-0 min-w-[330px]">
-					<h4 className="mb-4 font-bold font-display">In this room</h4>
-					<RoomMemberList room={room} />
+				<div className="mb-8">
+					<PlayerBar roomId={room.id} player={room.player as Player | undefined} />
 				</div>
-			</div>
-			<div className="sticky bottom-8">
-				<PlayerBar roomId={room.id} player={room.player as Player | undefined} />
 			</div>
 		</AudioProvider>
 	)
